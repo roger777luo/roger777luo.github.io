@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="hexo,github,vps,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="详细一步一步的打造属于个人的hexo博客">
+<meta name="keywords" content="hexo,github,vps">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hexo博客搭建">
+<meta property="og:url" content="https://rogersnowing.cn/post/afcbc60d.html">
+<meta property="og:site_name" content="Roger&#39;s Note">
+<meta property="og:description" content="详细一步一步的打造属于个人的hexo博客">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-06-03T06:42:32.715Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="hexo博客搭建">
+<meta name="twitter:description" content="详细一步一步的打造属于个人的hexo博客">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://rogersnowing.cn/post/afcbc60d.html">
+
+
+
+
+
+  <title>hexo博客搭建 | Roger's Note</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Roger's Note</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Salvation lies within</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://rogersnowing.cn/post/afcbc60d.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Roger Luo (Luo Dingjia)">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Roger's Note">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">hexo博客搭建</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-24T21:50:03+08:00">
+                2019-03-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tools/" itemprop="url" rel="index">
+                    <span itemprop="name">tools</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>详细一步一步的打造属于个人的hexo博客<br><a id="more"></a></p>
+<h1 id="使用Github-page"><a href="#使用Github-page" class="headerlink" title="使用Github page"></a>使用Github page</h1><h2 id="配置ssh-key"><a href="#配置ssh-key" class="headerlink" title="配置ssh key"></a>配置ssh key</h2><p>可以参考官网理解每步的意义，这里提供快速命令，前提是你安装了ssh</p>
+<ol>
+<li>生成公私钥 <code>ssh-keygen -t rsa -b 2048 -f ./github_rsa</code></li>
+<li>将公钥内容填到自己github中ssh key中</li>
+<li><p>配置 <code>~/.ssh/config</code> 没有就创建，添加如下内容</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Host github.com</span><br><span class="line">    HostName github.com</span><br><span class="line">    IdentityFile C:\\Users\\yourname\\.ssh\\github_rsa</span><br><span class="line">    PreferredAuthentications publickey</span><br><span class="line">    User your_account_on_github</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用命令测试 <code>ssh -T git@github.com</code> 返回ok标识已经ok了</p>
+</li>
+</ol>
+<h2 id="github-新建仓库"><a href="#github-新建仓库" class="headerlink" title="github 新建仓库"></a>github 新建仓库</h2><ol>
+<li>新建一个仓库，名字必须是 <code>your_account_name.github.io</code> 必须是以 <code>github.io</code> 结尾仓库名，同时记得勾上添加 readme 选项</li>
+<li>生成仓库后，点击 <code>settings</code> 下了到github pages 中</li>
+<li>第一次配置的话，直接 选择 “choose a theme” 然后随便选择一个风格，这样github会默认在master分支给你创建两个文件</li>
+<li>接着继续返回的 github pages 页面中，这是可以看到提示 <code>Your site is published at https://your_account_on_github.github.io</code> ，这是点击这个url就会看到刚才你随便选得风格</li>
+</ol>
+<h1 id="配置hexo"><a href="#配置hexo" class="headerlink" title="配置hexo"></a>配置hexo</h1><h2 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h2><ul>
+<li><p>centos 安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl -sL https://rpm.nodesource.com/setup_10.x | sudo bash </span><br><span class="line">yum install -y nodejs</span><br><span class="line">npm install hexo-cli -g # 缺省安装到 /lib/node_modules</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>window 安装</p>
+</li>
+</ul>
+<ol>
+<li>到官网下载nodejs，并安装</li>
+<li>接着配置在命令行找到npm</li>
+<li><code>npm install hexo-cli -g</code> </li>
+</ol>
+<h2 id="搭建hexo"><a href="#搭建hexo" class="headerlink" title="搭建hexo"></a>搭建hexo</h2><ol>
+<li>找个文件路径 执行如下命令来创建对应博客 <code>hexo init blog</code> 这个就在本地创建文件夹 blog</li>
+<li><code>hexo g</code> 生成静态页面至public目录</li>
+<li><code>hexo s</code> 运行hexo，按照提示会你在浏览器输入 <code>http://127.0.0.1:4000</code> 就可以查看你本地的hexo博客</li>
+</ol>
+<h2 id="建立hexo跟github-pages的关系"><a href="#建立hexo跟github-pages的关系" class="headerlink" title="建立hexo跟github pages的关系"></a>建立hexo跟github pages的关系</h2><ol>
+<li>安装hexo的发布工具 <code>npm install hexo-deployer-git --save</code> 其中–save会把安装信息package.json文件中</li>
+<li><p>修改<code>_config.yml</code>文件中<code>deploy</code>部分如下</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">git</span></span><br><span class="line"><span class="attr">  repository:</span> <span class="string">your_resposity_url_on_github</span></span><br><span class="line"><span class="attr">  branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>执行命令 <code>hexo deploy</code> 发布，就会利用之前配置的ssh key推送到github中</p>
+</li>
+<li>重新查看之前github pages给的域名，就可以看到属于自己hexo的博客了</li>
+</ol>
+<h1 id="问题集合"><a href="#问题集合" class="headerlink" title="问题集合"></a>问题集合</h1><h2 id="如果有多个rep，多个仓库发布，如何处理"><a href="#如果有多个rep，多个仓库发布，如何处理" class="headerlink" title="如果有多个rep，多个仓库发布，如何处理"></a>如果有多个rep，多个仓库发布，如何处理</h2><p>修改配置_config.yml在repo实现多仓库<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: </span><br><span class="line">    github: https://github.com/pengloo53/pengloo53.github.io.git</span><br><span class="line">    gitcafe: https://gitcafe.com/pengloo53/pengloo53.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure></p>
+<h2 id="修改端口号"><a href="#修改端口号" class="headerlink" title="修改端口号"></a>修改端口号</h2><p>修改博客下 <code>_config.yml</code> 中<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Server</span></span><br><span class="line"><span class="attr">server:</span></span><br><span class="line"><span class="attr">  port:</span> <span class="number">4001</span></span><br><span class="line"><span class="attr">  log:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">  ip:</span> <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span></span><br><span class="line"><span class="attr">  compress:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">  header:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="如何跟nginx结合"><a href="#如何跟nginx结合" class="headerlink" title="如何跟nginx结合"></a>如何跟nginx结合</h2><p>nginx的配置文件将中地址带blog的转到hexo的服务器上<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">location ^~ /blog &#123;</span><br><span class="line">        proxy_set_header        X-Forwarded-Protocol  $scheme;</span><br><span class="line">        proxy_set_header        Host            $host;</span><br><span class="line">        proxy_set_header        X-Real-IP       $remote_addr;</span><br><span class="line">        proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">        proxy_pass http://127.0.0.1:4001;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>注意要配合修改博客下 <code>_config.yml</code> 中的 root</p>
+<h2 id="无法加载css"><a href="#无法加载css" class="headerlink" title="无法加载css"></a>无法加载css</h2><p>f12 打开查看具体请求 css的连接是否 not found, 是的话，是由于配置的blog有可能在服务器已经配置nginx或者启动的路径有问题，需要修改 <code>_config.yml</code> 文件中root的路径</p>
+<p>例如如下情况： nginx的配置文件将中地址带blog的转到hexo的服务器上<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">location ^~ /blog &#123;</span><br><span class="line">        proxy_set_header        X-Forwarded-Protocol  $scheme;</span><br><span class="line">        proxy_set_header        Host            $host;</span><br><span class="line">        proxy_set_header        X-Real-IP       $remote_addr;</span><br><span class="line">        proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">        proxy_pass http://127.0.0.1:4001;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上述配置是将域名后面以blog开头的转到本地hexo服务</p>
+<p>修改blog 下 <code>_config.yml</code> 文件中的 root 如下</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">root:</span> <span class="string">/blog/</span></span><br></pre></td></tr></table></figure>
+<p>重启hexo服务</p>
+<h2 id="无法启动-hexo-server"><a href="#无法启动-hexo-server" class="headerlink" title="无法启动 hexo server"></a>无法启动 hexo server</h2><p>执行 <code>hexo server</code> 发现报找不到命令，有一下处理情况：</p>
+<ol>
+<li>检查是否安装了 <code>hexo server</code>，没有的话就执行命令安装 <code>npm install hexo-server --save</code></li>
+<li>检查是否 <code>_config.yml</code> 文件中配置写错了，这个也是很多人在增加插件之后发现写的问题导致的</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/hexo/" rel="tag"># hexo</a>
+          
+            <a href="/tags/github/" rel="tag"># github</a>
+          
+            <a href="/tags/vps/" rel="tag"># vps</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/fcf88305.html" rel="next" title="LeetCode 127. Word Ladder">
+                <i class="fa fa-chevron-left"></i> LeetCode 127. Word Ladder
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/post/68f7f501.html" rel="prev" title="LeetCode-139-Word-Break">
+                LeetCode-139-Word-Break <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Roger Luo (Luo Dingjia)</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#使用Github-page"><span class="nav-number">1.</span> <span class="nav-text">使用Github page</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#配置ssh-key"><span class="nav-number">1.1.</span> <span class="nav-text">配置ssh key</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#github-新建仓库"><span class="nav-number">1.2.</span> <span class="nav-text">github 新建仓库</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置hexo"><span class="nav-number">2.</span> <span class="nav-text">配置hexo</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装依赖"><span class="nav-number">2.1.</span> <span class="nav-text">安装依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#搭建hexo"><span class="nav-number">2.2.</span> <span class="nav-text">搭建hexo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#建立hexo跟github-pages的关系"><span class="nav-number">2.3.</span> <span class="nav-text">建立hexo跟github pages的关系</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#问题集合"><span class="nav-number">3.</span> <span class="nav-text">问题集合</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#如果有多个rep，多个仓库发布，如何处理"><span class="nav-number">3.1.</span> <span class="nav-text">如果有多个rep，多个仓库发布，如何处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改端口号"><span class="nav-number">3.2.</span> <span class="nav-text">修改端口号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何跟nginx结合"><span class="nav-number">3.3.</span> <span class="nav-text">如何跟nginx结合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#无法加载css"><span class="nav-number">3.4.</span> <span class="nav-text">无法加载css</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#无法启动-hexo-server"><span class="nav-number">3.5.</span> <span class="nav-text">无法启动 hexo server</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+
+  
+
+  
+</div>
+
+
+<div class="BbeiAn-info"">
+  粤ICP备 -
+  <a href="http://www.miitbeian.gov.cn">17113681号-1</a>
+  
+</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
