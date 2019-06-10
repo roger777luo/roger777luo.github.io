@@ -96,18 +96,23 @@
 
 
 
-  <meta name="description" content="单词拆分II">
-<meta name="keywords" content="leetcode,dp,hard,algorithm">
+  <meta name="description" content="背景intellij idea作为java开发常用的ide，结合当前主流的虚拟化docker发布，如何结合两者进行调试开发是一个基本使用场景">
+<meta name="keywords" content="intellijidea,docker,java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="LeetCode-140-Word-Break-II">
-<meta property="og:url" content="https://rogersnowing.cn/post/2134f6db.html">
+<meta property="og:title" content="intellij使用docker来调试">
+<meta property="og:url" content="https://rogersnowing.cn/post/7a9c1de5.html">
 <meta property="og:site_name" content="Roger&#39;s Note">
-<meta property="og:description" content="单词拆分II">
+<meta property="og:description" content="背景intellij idea作为java开发常用的ide，结合当前主流的虚拟化docker发布，如何结合两者进行调试开发是一个基本使用场景">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-06-03T06:42:32.714Z">
+<meta property="og:image" content="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/intellij/docker_integration.png">
+<meta property="og:image" content="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/intellij/docker_setting.png">
+<meta property="og:image" content="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/intellij/remote_debug_setting.png">
+<meta property="og:image" content="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/intellij/remote_debug_connected.png">
+<meta property="og:updated_time" content="2019-06-10T06:58:05.844Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="LeetCode-140-Word-Break-II">
-<meta name="twitter:description" content="单词拆分II">
+<meta name="twitter:title" content="intellij使用docker来调试">
+<meta name="twitter:description" content="背景intellij idea作为java开发常用的ide，结合当前主流的虚拟化docker发布，如何结合两者进行调试开发是一个基本使用场景">
+<meta name="twitter:image" content="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/intellij/docker_integration.png">
 
 
 
@@ -115,7 +120,7 @@
 
   
   
-  <link rel="canonical" href="https://rogersnowing.cn/post/2134f6db">
+  <link rel="canonical" href="https://rogersnowing.cn/post/7a9c1de5">
 
 
 
@@ -125,7 +130,7 @@
   };
 </script>
 
-  <title>LeetCode-140-Word-Break-II | Roger's Note</title>
+  <title>intellij使用docker来调试 | Roger's Note</title>
   
 
 
@@ -294,7 +299,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://rogersnowing.cn/post/2134f6db.html">
+    <link itemprop="mainEntityOfPage" href="https://rogersnowing.cn/post/7a9c1de5.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Roger Luo (Luo Dingjia)">
@@ -311,7 +316,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">LeetCode-140-Word-Break-II
+          <h1 class="post-title" itemprop="name headline">intellij使用docker来调试
 
               
             
@@ -337,24 +342,12 @@
                 
               
 
-              <time title="创建时间：2019-03-25 10:42:13" itemprop="dateCreated datePublished" datetime="2019-03-25T10:42:13+08:00">2019-03-25</time>
+              <time title="创建时间：2019-06-10 10:43:20 / 修改时间：14:58:05" itemprop="dateCreated datePublished" datetime="2019-06-10T10:43:20+08:00">2019-06-10</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-06-03 14:42:32" itemprop="dateModified" datetime="2019-06-03T14:42:32+08:00">2019-06-03</time>
               
             
           </span>
@@ -371,7 +364,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/algorithm/" itemprop="url" rel="index"><span itemprop="name">algorithm</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a></span>
 
                 
                 
@@ -406,29 +399,40 @@
       
 
       
-        <p>单词拆分II<br><a id="more"></a></p>
-<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>Given a non-empty string s and a dictionary wordDict containing a list of non-empty words, add spaces in s to construct a sentence where each word is a valid dictionary word. Return all such possible sentences.</p>
-<p>Note:</p>
-<ul>
-<li>The same word in the dictionary may be reused multiple times in the segmentation.</li>
-<li>You may assume the dictionary does not contain duplicate words.</li>
+        <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>intellij idea作为java开发常用的ide，结合当前主流的虚拟化docker发布，如何结合两者进行调试开发是一个基本使用场景<br><a id="more"></a></p>
+<h1 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h1><ul>
+<li>macOS mojave</li>
+<li>Docker Desktop for mac</li>
+<li>IntelliJ IDEA 2019.1.2 (Ultimate Edition)<h1 id="执行步骤"><a href="#执行步骤" class="headerlink" title="执行步骤"></a>执行步骤</h1><h2 id="1-确认安装docker插件"><a href="#1-确认安装docker插件" class="headerlink" title="1. 确认安装docker插件"></a>1. 确认安装docker插件</h2>默认是安装，查看方式 设置-插件-查询<code>docker intergration</code>关键字<br><img src="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/intellij/docker_integration.png" alt="pic"></li>
 </ul>
-<p><strong>Example 1:</strong></p>
-<p>Input:<br>s = “catsanddog”<br>wordDict = [“cat”, “cats”, “and”, “sand”, “dog”]<br>Output:<br>[<br>  “cats and dog”,<br>  “cat sand dog”<br>]</p>
-<p><strong>Example 2:</strong></p>
-<p>Input:<br>s = “pineapplepenapple”<br>wordDict = [“apple”, “pen”, “applepen”, “pine”, “pineapple”]<br>Output:<br>[<br>  “pine apple pen apple”,<br>  “pineapple pen apple”,<br>  “pine applepen apple”<br>]<br>Explanation: Note that you are allowed to reuse a dictionary word.</p>
-<p><strong>Example 3:</strong></p>
-<p>Input:<br>s = “catsandog”<br>wordDict = [“cats”, “dog”, “sand”, “and”, “cat”]<br>Output:<br>[]</p>
-<h1 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h1><h2 id="采用深度优先遍历（DFS）"><a href="#采用深度优先遍历（DFS）" class="headerlink" title="采用深度优先遍历（DFS）"></a>采用深度优先遍历（DFS）</h2><ul>
-<li>采用DFS遍历所有情况，原理是用字典遍历字符串来判断是否可以拆分成字典+子字符串</li>
-<li>如果可以进一步的递归拆分子字符串，知道字符串长度为空</li>
-<li>最后返回的时候合并各种子字符串组合</li>
-<li>这里还需要记录之前遍历字符串可以拆分的情况来提高效率，防止大数据测试时计算耗时殆尽<blockquote>
-<p>Runtime: 5 ms, faster than 96.12% of Java online submissions for Word Break II.<br>Memory Usage: 39.3 MB, less than 28.95% of Java online submissions for Word Break II.</p>
-</blockquote>
-</li>
+<h2 id="2-配置docker信息"><a href="#2-配置docker信息" class="headerlink" title="2. 配置docker信息"></a>2. 配置docker信息</h2><p>通过设置-编译-docker配置，创建一个“docker mac“运行器，选择docker deamon是本机的docker for mac，然后会看到底下显示着”connection successful“<br><img src="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/intellij/docker_setting.png" alt="pic"></p>
+<h2 id="3-创建一个项目spring-boot"><a href="#3-创建一个项目spring-boot" class="headerlink" title="3. 创建一个项目spring boot"></a>3. 创建一个项目spring boot</h2><p>具体参考 <a href="https://www.jetbrains.com/help/idea/spring-boot.html" target="_blank" rel="noopener">官网介绍</a></p>
+<h2 id="4-创建docker-file"><a href="#4-创建docker-file" class="headerlink" title="4. 创建docker file"></a>4. 创建docker file</h2><p>在项目目录下创建docker file，我在main/docker/创建dockerfile文件，并输入如下内容<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">FROM</span> <span class="attr">openjdk:8</span></span><br><span class="line"><span class="string">VOLUME</span> <span class="string">/tmp</span></span><br><span class="line"><span class="string">ADD</span> <span class="string">dockerci-0.0.1-SNAPSHOT.jar</span> <span class="string">app.jar</span></span><br><span class="line"><span class="string">ENTRYPOINT</span> <span class="string">["java","-Djava.security.egd=file:/dev/./urandom","-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=10002","-jar","/app.jar"]</span></span><br></pre></td></tr></table></figure></p>
+<p>注意这里面加入了<code>-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=10002</code> 其中这是用于远程调试使用的，让其远程程序需要支持调试的jvm参数配置。</p>
+<p>接着执行“左边的绿色三角形”执行，运行容器，查看到容器运行正常</p>
+<h2 id="5-创建远程调试"><a href="#5-创建远程调试" class="headerlink" title="5. 创建远程调试"></a>5. 创建远程调试</h2><p>创建运行配置项，增加remote调试，需要配置10002，这个是调试端口<br><img src="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/intellij/remote_debug_setting.png" alt="pic"></p>
+<ol>
+<li>选择remote来创建调试</li>
+<li>选择端口为10002</li>
+<li>选择模块是你创建的项目，这里我是dockerci</li>
+<li>在启动前，选择拉起docker<br>保存应用</li>
+</ol>
+<h2 id="6-调试"><a href="#6-调试" class="headerlink" title="6. 调试"></a>6. 调试</h2><ol>
+<li>设置好断点</li>
+<li>启动调试<br><img src="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/intellij/remote_debug_connected.png" alt="pic"></li>
+</ol>
+<h2 id="错误"><a href="#错误" class="headerlink" title="错误"></a>错误</h2><ol>
+<li><code>Error running &#39;remote_debug&#39;: Unable to open debugger port (localhost:10002): java.io.IOException &quot;handshake failed - connection prematurally closed&quot;</code> </li>
+</ol>
+<p>这是因为容器跑起来没有拉起远程调试端口10002，检查jvm拉起参数是否配置了 <code>-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=10002</code></p>
+<ol start="2">
+<li>端口已经占用</li>
+</ol>
+<p>检查容器是否已经启动了，或者服务跑起来，检查端口占用程序。</p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><ul>
+<li><a href="https://www.jetbrains.com/help/idea/debug-a-java-application-using-a-dockerfile.html" target="_blank" rel="noopener">Debug a Java application using a Dockerfile</a></li>
 </ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;String&gt; <span class="title">wordBreak</span><span class="params">(String s, List&lt;String&gt; wordDict)</span> </span>&#123;</span><br><span class="line">        Map&lt;String, LinkedList&lt;String&gt;&gt; his = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        <span class="keyword">return</span> dfs(s, wordDict, his);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> LinkedList&lt;String&gt; <span class="title">dfs</span><span class="params">(String s, List&lt;String&gt; wordDict, Map&lt;String, LinkedList&lt;String&gt;&gt; his)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (his.containsKey(s)) <span class="keyword">return</span> his.get(s);</span><br><span class="line"></span><br><span class="line">        LinkedList&lt;String&gt; ret = <span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line">        <span class="keyword">if</span> (s.length() == <span class="number">0</span>) &#123;</span><br><span class="line">            ret.push(<span class="string">""</span>);</span><br><span class="line">            <span class="keyword">return</span> ret;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (String word : wordDict) &#123;</span><br><span class="line">            <span class="keyword">if</span> (s.startsWith(word)) &#123;</span><br><span class="line">                LinkedList&lt;String&gt; subs = dfs(s.substring(word.length()), wordDict, his);</span><br><span class="line">                <span class="keyword">for</span> (String sub : subs) &#123;</span><br><span class="line">                    ret.push(word + (sub.isEmpty() ? <span class="string">""</span> : <span class="string">" "</span>) + sub);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        his.put(s, ret);</span><br><span class="line">        <span class="keyword">return</span> ret;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
       
     </div>
 
@@ -451,13 +455,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/leetcode/" rel="tag"># leetcode</a>
+            <a href="/tags/intellijidea/" rel="tag"># intellijidea</a>
           
-            <a href="/tags/dp/" rel="tag"># dp</a>
+            <a href="/tags/docker/" rel="tag"># docker</a>
           
-            <a href="/tags/hard/" rel="tag"># hard</a>
-          
-            <a href="/tags/algorithm/" rel="tag"># algorithm</a>
+            <a href="/tags/java/" rel="tag"># java</a>
           
         </div>
       
@@ -470,8 +472,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/post/68f7f501.html" rel="next" title="LeetCode-139-Word-Break">
-                <i class="fa fa-chevron-left"></i> LeetCode-139-Word-Break
+              <a href="/post/e1774e9d.html" rel="next" title="java的hashmap详解">
+                <i class="fa fa-chevron-left"></i> java的hashmap详解
               </a>
             
           </div>
@@ -479,10 +481,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/post/121059af.html" rel="prev" title="hexo推荐插件配置">
-                hexo推荐插件配置 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -667,7 +665,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Question"><span class="nav-number">1.</span> <span class="nav-text">Question</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Solution"><span class="nav-number">2.</span> <span class="nav-text">Solution</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#采用深度优先遍历（DFS）"><span class="nav-number">2.1.</span> <span class="nav-text">采用深度优先遍历（DFS）</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#环境配置"><span class="nav-number">2.</span> <span class="nav-text">环境配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#执行步骤"><span class="nav-number">3.</span> <span class="nav-text">执行步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-确认安装docker插件"><span class="nav-number">3.1.</span> <span class="nav-text">1. 确认安装docker插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-配置docker信息"><span class="nav-number">3.2.</span> <span class="nav-text">2. 配置docker信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-创建一个项目spring-boot"><span class="nav-number">3.3.</span> <span class="nav-text">3. 创建一个项目spring boot</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-创建docker-file"><span class="nav-number">3.4.</span> <span class="nav-text">4. 创建docker file</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-创建远程调试"><span class="nav-number">3.5.</span> <span class="nav-text">5. 创建远程调试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-调试"><span class="nav-number">3.6.</span> <span class="nav-text">6. 调试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#错误"><span class="nav-number">3.7.</span> <span class="nav-text">错误</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文献"><span class="nav-number">4.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
             
 
           </div>
