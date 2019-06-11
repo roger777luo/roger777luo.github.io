@@ -99,21 +99,23 @@
   <meta name="description" content="背景intellij idea作为java开发常用的ide，结合当前主流的虚拟化docker发布，如何结合两者进行调试开发是一个基本使用场景">
 <meta name="keywords" content="java,intellijidea,docker">
 <meta property="og:type" content="article">
-<meta property="og:title" content="intellij使用docker调试">
-<meta property="og:url" content="https://rogersnowing.cn/post/7a9c1de5.html">
+<meta property="og:title" content="intellij使用docker调试进阶">
+<meta property="og:url" content="https://rogersnowing.cn/post/acc48d4f.html">
 <meta property="og:site_name" content="Roger&#39;s Note">
 <meta property="og:description" content="背景intellij idea作为java开发常用的ide，结合当前主流的虚拟化docker发布，如何结合两者进行调试开发是一个基本使用场景">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/intellij/docker_integration.png">
-<meta property="og:image" content="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/intellij/docker_setting.png">
-<meta property="og:image" content="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/intellij/docker_run_config.png">
-<meta property="og:image" content="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/intellij/remote_debug_setting.png">
-<meta property="og:image" content="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/intellij/remote_debug_connected.png">
-<meta property="og:updated_time" content="2019-06-11T03:43:52.977Z">
+<meta property="og:image" content="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/intellij/docker_compose_add.png">
+<meta property="og:image" content="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/intellij/docker_compose_setting_1.png">
+<meta property="og:image" content="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/intellij/docker_deamon_1.png">
+<meta property="og:image" content="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/intellij/docker_compose_log_1.png">
+<meta property="og:image" content="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/intellij/docker_compose_setting_2.png">
+<meta property="og:image" content="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/intellij/docker_compose_setting_4.png">
+<meta property="og:image" content="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/intellij/docker_compose_setting_3.png">
+<meta property="og:updated_time" content="2019-06-11T03:43:28.874Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="intellij使用docker调试">
+<meta name="twitter:title" content="intellij使用docker调试进阶">
 <meta name="twitter:description" content="背景intellij idea作为java开发常用的ide，结合当前主流的虚拟化docker发布，如何结合两者进行调试开发是一个基本使用场景">
-<meta name="twitter:image" content="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/intellij/docker_integration.png">
+<meta name="twitter:image" content="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/intellij/docker_compose_add.png">
 
 
 
@@ -121,7 +123,7 @@
 
   
   
-  <link rel="canonical" href="https://rogersnowing.cn/post/7a9c1de5">
+  <link rel="canonical" href="https://rogersnowing.cn/post/acc48d4f">
 
 
 
@@ -131,7 +133,7 @@
   };
 </script>
 
-  <title>intellij使用docker调试 | Roger's Note</title>
+  <title>intellij使用docker调试进阶 | Roger's Note</title>
   
 
 
@@ -300,7 +302,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://rogersnowing.cn/post/7a9c1de5.html">
+    <link itemprop="mainEntityOfPage" href="https://rogersnowing.cn/post/acc48d4f.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Roger Luo (Luo Dingjia)">
@@ -317,7 +319,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">intellij使用docker调试
+          <h1 class="post-title" itemprop="name headline">intellij使用docker调试进阶
 
               
             
@@ -343,24 +345,12 @@
                 
               
 
-              <time title="创建时间：2019-06-10 10:43:20" itemprop="dateCreated datePublished" datetime="2019-06-10T10:43:20+08:00">2019-06-10</time>
+              <time title="创建时间：2019-06-11 10:09:30 / 修改时间：11:43:28" itemprop="dateCreated datePublished" datetime="2019-06-11T10:09:30+08:00">2019-06-11</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-06-11 11:43:52" itemprop="dateModified" datetime="2019-06-11T11:43:52+08:00">2019-06-11</time>
               
             
           </span>
@@ -416,45 +406,39 @@
 <h1 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h1><ul>
 <li>macOS mojave</li>
 <li>Docker Desktop for mac</li>
-<li>IntelliJ IDEA 2019.1.2 (Ultimate Edition)<h1 id="执行步骤"><a href="#执行步骤" class="headerlink" title="执行步骤"></a>执行步骤</h1><h2 id="1-确认安装docker插件"><a href="#1-确认安装docker插件" class="headerlink" title="1. 确认安装docker插件"></a>1. 确认安装docker插件</h2>默认是安装，查看方式 设置-插件-查询<code>docker intergration</code>关键字<br><img src="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/intellij/docker_integration.png" alt="pic"></li>
+<li>IntelliJ IDEA 2019.1.2 (Ultimate Edition)<h1 id="执行步骤"><a href="#执行步骤" class="headerlink" title="执行步骤"></a>执行步骤</h1>假设已经通过<a href="https://rogersnowing.cn/post/7a9c1de5.html">intellij使用docker调试</a>来了解intell调试docker的基本配置，例如插件，docker deamon的配置安装，现在增加使用docker compose文件来配置负责的场景，例如需要拉起对应的db镜像或者服务，或者需要配置指定的网络指定的ip，虽然可以通过docker file中配置但是内容比较多，而且目前主流是用dockercompose来拉起服务，后面可以复用。<h2 id="创建镜像文件以及配置"><a href="#创建镜像文件以及配置" class="headerlink" title="创建镜像文件以及配置"></a>创建镜像文件以及配置</h2>参考<a href="https://rogersnowing.cn/post/7a9c1de5.html">intellij使用docker调试</a>中的步骤4<h2 id="创建docker-compose文件"><a href="#创建docker-compose文件" class="headerlink" title="创建docker compose文件"></a>创建docker compose文件</h2>在项目根目录创建docke compose文件，内容如下：<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">"3"</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">    app2:</span></span><br><span class="line"><span class="attr">        image:</span> <span class="attr">dockerci2_app2:latest</span> <span class="comment"># 镜像名</span></span><br><span class="line"><span class="attr">        restart:</span> <span class="string">always</span></span><br><span class="line"><span class="attr">        container_name:</span> <span class="string">app2</span></span><br><span class="line"><span class="attr">        hostname:</span> <span class="string">app2</span></span><br><span class="line"><span class="attr">        ports:</span></span><br><span class="line"><span class="bullet">            -</span> <span class="string">"10000:10000"</span> </span><br><span class="line"><span class="bullet">            -</span> <span class="string">"10002:10002"</span> <span class="comment"># 暴露调试端口</span></span><br><span class="line"><span class="attr">        networks:</span>           <span class="comment"># 指定网络</span></span><br><span class="line"><span class="attr">            hadoop_net:</span></span><br><span class="line"><span class="attr">                ipv4_address:</span> <span class="number">172.16</span><span class="number">.0</span><span class="number">.21</span> <span class="comment"># 指定ip</span></span><br><span class="line"><span class="attr">        volumes:</span></span><br><span class="line"><span class="bullet">            -</span> <span class="string">~/bigdata/data/hdfsclient:/data</span> <span class="comment"># 挂载存储卷</span></span><br><span class="line"><span class="bullet">            -</span> <span class="string">~/bigdata/logs/hdfsclient:/logs</span></span><br><span class="line"></span><br><span class="line"><span class="attr">networks:</span></span><br><span class="line"><span class="attr">    hadoop_net:</span></span><br><span class="line"><span class="attr">        external:</span></span><br><span class="line"><span class="attr">            name:</span> <span class="string">hadoop_net</span></span><br></pre></td></tr></table></figure>
+</li>
 </ul>
-<h2 id="2-配置docker信息"><a href="#2-配置docker信息" class="headerlink" title="2. 配置docker信息"></a>2. 配置docker信息</h2><p>通过设置-编译-docker配置，创建一个“docker mac“运行器，选择docker deamon是本机的docker for mac，然后会看到底下显示着”connection successful“<br><img src="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/intellij/docker_setting.png" alt="pic"></p>
-<h2 id="3-创建一个项目spring-boot"><a href="#3-创建一个项目spring-boot" class="headerlink" title="3. 创建一个项目spring boot"></a>3. 创建一个项目spring boot</h2><p>具体参考 <a href="https://www.jetbrains.com/help/idea/spring-boot.html" target="_blank" rel="noopener">官网介绍</a></p>
-<h2 id="4-创建docker-file"><a href="#4-创建docker-file" class="headerlink" title="4. 创建docker file"></a>4. 创建docker file</h2><p>在项目目录下创建docker file，我在main/docker/创建dockerfile文件，并输入如下内容<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">FROM</span> <span class="attr">openjdk:8</span></span><br><span class="line"><span class="string">VOLUME</span> <span class="string">/tmp</span></span><br><span class="line"><span class="string">ADD</span> <span class="string">dockerci-0.0.1-SNAPSHOT.jar</span> <span class="string">app.jar</span></span><br><span class="line"><span class="string">ENTRYPOINT</span> <span class="string">["java","-Djava.security.egd=file:/dev/./urandom","-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=10002","-jar","/app.jar"]</span></span><br></pre></td></tr></table></figure></p>
-<p>注意这里面加入了<code>-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=10002</code> 其中这是用于远程调试使用的，让其远程程序需要支持调试的jvm参数配置。</p>
-<p>接着执行“左边的绿色三角形”执行会弹出对应镜像生成以及容器运行的参数配置，具体配置如下，运行容器，查看到容器运行正常<br><img src="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/intellij/docker_run_config.png" alt="pic"></p>
+<p>这里涉及了指定网络以及指定ip，主要为了搭建大数据网路，注意到这里镜像名是之前通过docker build指定的镜像名</p>
+<h2 id="创建docker-compose配置"><a href="#创建docker-compose配置" class="headerlink" title="创建docker compose配置"></a>创建docker compose配置</h2><p>通过运行/调试配置增加docker compose 文件，如下图，在docker下选择docker-compose文件</p>
+<p><img src="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/intellij/docker_compose_add.png" alt="pic"></p>
+<p>修改配置如下：<br><img src="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/intellij/docker_compose_setting_1.png" alt="pic"><br>修改compose file位置为第一步骤创建的文件路径</p>
+<h2 id="创建容器"><a href="#创建容器" class="headerlink" title="创建容器"></a>创建容器</h2><p>点击运行或者调试触发容器的创建，可以看到容器出现在docker deamon中<br><img src="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/intellij/docker_deamon_1.png" alt="img"></p>
+<p><img src="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/intellij/docker_compose_log_1.png" alt="img"></p>
+<h2 id="创建远程调试以及调试"><a href="#创建远程调试以及调试" class="headerlink" title="创建远程调试以及调试"></a>创建远程调试以及调试</h2><p>参考<a href="https://rogersnowing.cn/post/7a9c1de5.html">intellij使用docker调试</a>中的步骤5和6。</p>
+<h1 id="进阶1-集成镜像生成到docker-compose中"><a href="#进阶1-集成镜像生成到docker-compose中" class="headerlink" title="进阶1: 集成镜像生成到docker compose中"></a>进阶1: 集成镜像生成到docker compose中</h1><p>达到这个目的，需要修改两个地方。</p>
 <ol>
-<li>选择之前设置的docker deamon</li>
-<li>选择之前创建的dockerfile文件</li>
-<li>选择对应dockerfile中涉及的app.jar的路径，这里根据项目配置成docker/target</li>
-<li>配置对外暴露的端口</li>
-<li>（可选）指定镜像名，修改image tag填写</li>
+<li>修改docker compose文件内容将image修改成build，修改内容如下<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">    app2:</span></span><br><span class="line"><span class="attr">        build:</span></span><br><span class="line"><span class="attr">            context:</span> <span class="string">./</span></span><br><span class="line"><span class="attr">            dockerfile:</span> <span class="string">DockerFile</span></span><br><span class="line"><span class="comment">#        image: dockerci2_app2:latest</span></span><br></pre></td></tr></table></figure>
+</li>
 </ol>
-<h2 id="5-创建远程调试"><a href="#5-创建远程调试" class="headerlink" title="5. 创建远程调试"></a>5. 创建远程调试</h2><p>创建运行配置项，增加remote调试，需要配置10002，这个是调试端口<br><img src="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/intellij/remote_debug_setting.png" alt="pic"></p>
-<ol>
-<li>选择remote来创建调试</li>
-<li>选择端口为10002</li>
-<li>选择模块是你创建的项目，这里我是dockerci</li>
-<li>在启动前，选择拉起docker<br>保存应用</li>
-</ol>
-<h2 id="6-调试"><a href="#6-调试" class="headerlink" title="6. 调试"></a>6. 调试</h2><ol>
-<li>设置好断点</li>
-<li>启动调试<br><img src="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/intellij/remote_debug_connected.png" alt="pic"></li>
-</ol>
-<h2 id="错误"><a href="#错误" class="headerlink" title="错误"></a>错误</h2><ol>
-<li><code>Error running &#39;remote_debug&#39;: Unable to open debugger port (localhost:10002): java.io.IOException &quot;handshake failed - connection prematurally closed&quot;</code> </li>
-</ol>
-<p>这是因为容器跑起来没有拉起远程调试端口10002，检查jvm拉起参数是否配置了 <code>-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=10002</code></p>
+<p>这里需要指定context路径，就跟docker file配置一致，指定Dockerfile文件内容也就是生成镜像的文件</p>
 <ol start="2">
-<li>端口已经占用</li>
+<li>修改docker compose的配置<br>勾选<code>--build, force build image</code></li>
 </ol>
-<p>检查容器是否已经启动了，或者服务跑起来，检查端口占用程序。</p>
-<h1 id="相关文章"><a href="#相关文章" class="headerlink" title="相关文章"></a>相关文章</h1><ul>
-<li><a href="https://rogersnowing.cn/post/acc48d4f.html">intellij使用docker调试进阶</a></li>
-</ul>
-<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><ul>
-<li><a href="https://www.jetbrains.com/help/idea/debug-a-java-application-using-a-dockerfile.html" target="_blank" rel="noopener">Debug a Java application using a Dockerfile</a></li>
-</ul>
+<p><img src="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/intellij/docker_compose_setting_2.png" alt="img"></p>
+<p>再次执行就可以每次重新生成镜像了</p>
+<p>注意在配置项中设置了services的内容就会导致镜像不能重新生成，记得设置为空</p>
+<p><img src="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/intellij/docker_compose_setting_4.png" alt="img"></p>
+<h1 id="进阶2-每次容器运行是基于最新代码编译包"><a href="#进阶2-每次容器运行是基于最新代码编译包" class="headerlink" title="进阶2: 每次容器运行是基于最新代码编译包"></a>进阶2: 每次容器运行是基于最新代码编译包</h1><p>做到这个效果，需要maven或者其他编译器支持，处理步骤如下</p>
+<ol>
+<li><p>创建package的编译项<br>右键选择maven的package，选择<code>Create Dockerci2 [package]</code></p>
+</li>
+<li><p>修改docker compose的配置<br>在before launch里增加刚才添加的maven打包项</p>
+</li>
+</ol>
+<p><img src="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/intellij/docker_compose_setting_3.png" alt="img"></p>
+<p>再次执行就可以每次基于最新代码生成镜像了</p>
+<h1 id="进阶3-一键实现打包、镜像生成、容器创建、远程调试"><a href="#进阶3-一键实现打包、镜像生成、容器创建、远程调试" class="headerlink" title="进阶3: 一键实现打包、镜像生成、容器创建、远程调试"></a>进阶3: 一键实现打包、镜像生成、容器创建、远程调试</h1><p>通过前面进阶1，2可以实现了一键实现打包、镜像生成、容器创建，但是要集成远程调试，还是不行，初步定位是容器起来后调试端口起来需要时间，但是intellij立即尝试进行调试端口链接，导致错误<code>Cannot retrieve debug connection: Debug mode is not supported for &#39;Docker-compose: dockerci2&#39;</code> 即使通过睡眠或者wait-fot-it.sh也改变不了，因为intellij只要depoly成功就可以链接调试端口，而不是等待容器服务正常提供服务，还有修改suspend为y也行，这个看后面时间再处理，不过可以通过</p>
 
       
     </div>
@@ -495,8 +479,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/post/e1774e9d.html" rel="next" title="java的hashmap详解">
-                <i class="fa fa-chevron-left"></i> java的hashmap详解
+              <a href="/post/7a9c1de5.html" rel="next" title="intellij使用docker调试">
+                <i class="fa fa-chevron-left"></i> intellij使用docker调试
               </a>
             
           </div>
@@ -504,10 +488,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/post/acc48d4f.html" rel="prev" title="intellij使用docker调试进阶">
-                intellij使用docker调试进阶 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -692,7 +672,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#环境配置"><span class="nav-number">2.</span> <span class="nav-text">环境配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#执行步骤"><span class="nav-number">3.</span> <span class="nav-text">执行步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-确认安装docker插件"><span class="nav-number">3.1.</span> <span class="nav-text">1. 确认安装docker插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-配置docker信息"><span class="nav-number">3.2.</span> <span class="nav-text">2. 配置docker信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-创建一个项目spring-boot"><span class="nav-number">3.3.</span> <span class="nav-text">3. 创建一个项目spring boot</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-创建docker-file"><span class="nav-number">3.4.</span> <span class="nav-text">4. 创建docker file</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-创建远程调试"><span class="nav-number">3.5.</span> <span class="nav-text">5. 创建远程调试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-调试"><span class="nav-number">3.6.</span> <span class="nav-text">6. 调试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#错误"><span class="nav-number">3.7.</span> <span class="nav-text">错误</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#相关文章"><span class="nav-number">4.</span> <span class="nav-text">相关文章</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文献"><span class="nav-number">5.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#环境配置"><span class="nav-number">2.</span> <span class="nav-text">环境配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#执行步骤"><span class="nav-number">3.</span> <span class="nav-text">执行步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建镜像文件以及配置"><span class="nav-number">3.1.</span> <span class="nav-text">创建镜像文件以及配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建docker-compose文件"><span class="nav-number">3.2.</span> <span class="nav-text">创建docker compose文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建docker-compose配置"><span class="nav-number">3.3.</span> <span class="nav-text">创建docker compose配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建容器"><span class="nav-number">3.4.</span> <span class="nav-text">创建容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建远程调试以及调试"><span class="nav-number">3.5.</span> <span class="nav-text">创建远程调试以及调试</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进阶1-集成镜像生成到docker-compose中"><span class="nav-number">4.</span> <span class="nav-text">进阶1: 集成镜像生成到docker compose中</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进阶2-每次容器运行是基于最新代码编译包"><span class="nav-number">5.</span> <span class="nav-text">进阶2: 每次容器运行是基于最新代码编译包</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进阶3-一键实现打包、镜像生成、容器创建、远程调试"><span class="nav-number">6.</span> <span class="nav-text">进阶3: 一键实现打包、镜像生成、容器创建、远程调试</span></a></li></ol></div>
             
 
           </div>
