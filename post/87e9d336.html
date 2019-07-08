@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+  <meta name="google-site-verification" content="byhWoQUfSwWgh2OkIV9b7co8brBG6OLSZwm9ivUtuZ0">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.2" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="flink table api 跟 sql 使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="flink table api 跟 sql 使用">
+<meta property="og:url" content="https://rogersnowing.cn/post/87e9d336.html">
+<meta property="og:site_name" content="Roger&#39;s Note">
+<meta property="og:description" content="flink table api 跟 sql 使用">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-07-05T07:36:33.395Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="flink table api 跟 sql 使用">
+<meta name="twitter:description" content="flink table api 跟 sql 使用">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://rogersnowing.cn/post/87e9d336">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>flink table api 跟 sql 使用 | Roger's Note</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Roger's Note</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Salvation lies within</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://rogersnowing.cn/post/87e9d336.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Roger Luo (Luo Dingjia)">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Roger's Note">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">flink table api 跟 sql 使用
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-04 19:28:37" itemprop="dateCreated datePublished" datetime="2019-07-04T19:28:37+08:00">2019-07-04</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-07-05 15:36:33" itemprop="dateModified" datetime="2019-07-05T15:36:33+08:00">2019-07-05</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>flink table api 跟 sql 使用<br><a id="more"></a></p>
+<h1 id="框架模式"><a href="#框架模式" class="headerlink" title="框架模式"></a>框架模式</h1><h2 id="DataStream-DataSet与Table转换关系"><a href="#DataStream-DataSet与Table转换关系" class="headerlink" title="DataStream/DataSet与Table转换关系"></a>DataStream/DataSet与Table转换关系</h2><h3 id="DataStream转Table"><a href="#DataStream转Table" class="headerlink" title="DataStream转Table"></a>DataStream转Table</h3><ol>
+<li><p>DataStream注册成Table</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();</span><br><span class="line">StreamTableEnvironment tEnv = StreamTableEnvironment.create(env);</span><br><span class="line">DataStreamSource&lt;Tuple2&lt;String, Integer&gt;&gt; source = env.fromElements(</span><br><span class="line">        Tuple2.of(<span class="string">"a"</span>, <span class="number">1</span>),</span><br><span class="line">        Tuple2.of(<span class="string">"b"</span>, <span class="number">2</span>)</span><br><span class="line">);</span><br><span class="line">tEnv.registerDataStream(<span class="string">"t1"</span>, source, <span class="string">"name, age"</span>);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>DataStream转换成Table，然后注册到tEnv</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();</span><br><span class="line">StreamTableEnvironment tEnv = StreamTableEnvironment.create(env);</span><br><span class="line">DataStreamSource&lt;Tuple2&lt;String, Integer&gt;&gt; source = env.fromElements(</span><br><span class="line">        Tuple2.of(<span class="string">"a"</span>, <span class="number">1</span>),</span><br><span class="line">        Tuple2.of(<span class="string">"b"</span>, <span class="number">2</span>)</span><br><span class="line">);</span><br><span class="line">Table table = tEnv.fromDataStream(source, <span class="string">"name, age"</span>);</span><br><span class="line">tEnv.registerTable(<span class="string">"t1"</span>, table);</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="Table转DataStream"><a href="#Table转DataStream" class="headerlink" title="Table转DataStream"></a>Table转DataStream</h3><p>支持将Table转换成Row，Pojo，Tuple等数据类型</p>
+<ul>
+<li><p>如果是Row类型，获取数据字段只能采用getField或者setField，通过字段索引（从0开始）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tEnv.toAppendStream(tEnv.sqlQuery(sql), Row.class).map(value-&gt;&#123;</span><br><span class="line">        System.out.println(value.getField(<span class="number">0</span>).getClass().getName());</span><br><span class="line">        <span class="keyword">return</span> value;</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果是pojo类型，就需要自定义的属性字段名称/字段类型/Getter/Settter要跟table的column的名称一样，例如假设table列名是name，那么pojo就需要有name的字段，getName函数跟setName函数，同时要求同一类型，否则会如下错误</p>
+<blockquote>
+<p>does not match the number[1] of requested type<br>下面是测试代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.flink.api.common.functions.MapFunction;</span><br><span class="line"><span class="keyword">import</span> org.apache.flink.api.java.tuple.Tuple2;</span><br><span class="line"><span class="keyword">import</span> org.apache.flink.streaming.api.datastream.DataStreamSource;</span><br><span class="line"><span class="keyword">import</span> org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;</span><br><span class="line"><span class="keyword">import</span> org.apache.flink.table.api.Table;</span><br><span class="line"><span class="keyword">import</span> org.apache.flink.table.api.java.StreamTableEnvironment;</span><br><span class="line"><span class="keyword">import</span> org.apache.flink.types.Row;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestTable</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();</span><br><span class="line">        StreamTableEnvironment tEnv = StreamTableEnvironment.create(env);</span><br><span class="line">        DataStreamSource&lt;Tuple2&lt;String, Integer&gt;&gt; source = env.fromElements(</span><br><span class="line">                Tuple2.of(<span class="string">"a"</span>, <span class="number">1</span>),</span><br><span class="line">                Tuple2.of(<span class="string">"b"</span>, <span class="number">2</span>)</span><br><span class="line">        );</span><br><span class="line">        Table table = tEnv.fromDataStream(source, <span class="string">"name, age"</span>);</span><br><span class="line">        tEnv.registerTable(<span class="string">"t1"</span>, table);</span><br><span class="line"></span><br><span class="line">        String sql = <span class="string">"select name, age from t1"</span>;</span><br><span class="line"></span><br><span class="line">        tEnv.toAppendStream(tEnv.sqlQuery(sql), Person.class).map(value-&gt;&#123;</span><br><span class="line">            System.out.println(value.getName());</span><br><span class="line">            <span class="keyword">return</span> value;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        env.execute(<span class="string">"testTableApi"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">        <span class="keyword">private</span> String name;</span><br><span class="line">        <span class="keyword">private</span> Integer age;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Person</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> name;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.name = name;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Integer <span class="title">getAge1</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> age;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAge</span><span class="params">(Integer age)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.age = age;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+<li><p>输出Tuple类型</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tEnv.toAppendStream(tEnv.sqlQuery(sql), TypeInformation.of(<span class="keyword">new</span> TypeHint&lt;Tuple2&lt;String, Integer&gt;&gt;()&#123;&#125;)).map(value-&gt;&#123;</span><br><span class="line">    System.out.println(value.f0);</span><br><span class="line">    <span class="keyword">return</span> value;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>由于java的类型擦除问题，会报错</p>
+<blockquote>
+<p>The return type of function ‘main(TestTable.java:26)’ could not be determined automatically, due to type erasure. You can give type information hints by using the returns(…) method on the result of the transformation call, or by letting your function implement the ‘ResultTypeQueryable’ interface.<br>Caused by: org.apache.flink.api.common.functions.InvalidTypesException: The generic type parameters of ‘Tuple2’ are missing. In many cases lambda methods don’t provide enough information for automatic type extraction when Java generics are involved. An easy workaround is to use an (anonymous) class instead that implements the ‘org.apache.flink.api.common.functions.MapFunction’ interface. Otherwise the type has to be specified explicitly using type information.<br>通过原因也可以看到一个很坑的地方就是lambda缺少类型推断，所以只能修改成不用lambda的处理<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">DataStream&lt;Tuple2&lt;String, Integer&gt;&gt; ds = tEnv.toAppendStream(tEnv.sqlQuery(sql), TypeInformation.of(<span class="keyword">new</span> TypeHint&lt;Tuple2&lt;String, Integer&gt;&gt;()&#123;&#125;)).map(<span class="keyword">new</span> MapFunction&lt;Tuple2&lt;String, Integer&gt;, Tuple2&lt;String, Integer&gt;&gt;() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Tuple2&lt;String, Integer&gt; <span class="title">map</span><span class="params">(Tuple2&lt;String, Integer&gt; value)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(value.f0);</span><br><span class="line">        <span class="keyword">return</span> value;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h1 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h1><h2 id="例子1"><a href="#例子1" class="headerlink" title="例子1"></a>例子1</h2><p>从MySQL输入到输出到MySQL，中间加上逻辑处理<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// for batch programs use ExecutionEnvironment instead of StreamExecutionEnvironment</span></span><br><span class="line">StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();</span><br><span class="line"></span><br><span class="line"><span class="comment">// create a TableEnvironment</span></span><br><span class="line">StreamTableEnvironment tEnv = StreamTableEnvironment.create(env);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 添加数据源</span></span><br><span class="line">DataStreamSource&lt;StockInfo&gt; source = env.addSource(<span class="keyword">new</span> MySQLReader());</span><br><span class="line"></span><br><span class="line">tEnv.registerDataStream(<span class="string">"mytable1"</span>, source);</span><br><span class="line"></span><br><span class="line">String sql = <span class="string">"select id, pub from mytable1"</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 通过sql</span></span><br><span class="line">Table table2 = tEnv.sqlQuery(sql);</span><br><span class="line"></span><br><span class="line">DataStream&lt;Row&gt; resultSet = tEnv.toAppendStream(table2, Row.class);</span><br><span class="line"></span><br><span class="line">DataStream&lt;StockResult&gt; resultStream  = resultSet.map(in-&gt;<span class="keyword">new</span> StockResult((String)in.getField(<span class="number">0</span>), (Date)in.getField(<span class="number">1</span>),</span><br><span class="line">        <span class="keyword">new</span> Date(<span class="keyword">new</span> java.util.Date().getTime())));</span><br><span class="line"></span><br><span class="line">resultStream.addSink(<span class="keyword">new</span> MySQLWriter());</span><br><span class="line"></span><br><span class="line">env.execute(<span class="string">"testTableApi"</span>);</span><br></pre></td></tr></table></figure></p>
+<h1 id="错误"><a href="#错误" class="headerlink" title="错误"></a>错误</h1><h2 id="SQL-validation-failed-Type-is-not-supported-Date"><a href="#SQL-validation-failed-Type-is-not-supported-Date" class="headerlink" title="SQL validation failed. Type is not supported: Date"></a>SQL validation failed. Type is not supported: Date</h2><p>检查下数据类型是否支持，参考<a href="https://ci.apache.org/projects/flink/flink-docs-release-1.8/dev/table/sql.html#data-types" target="_blank" rel="noopener">官网</a></p>
+<p>发现了使用了java.util.Date而不是java.sql.Date导致</p>
+<h2 id="Exception-in-thread-“main”-java-lang-NoClassDefFoundError-org-apache-flink-api-scala-typeutils-CaseClassTypeInfo"><a href="#Exception-in-thread-“main”-java-lang-NoClassDefFoundError-org-apache-flink-api-scala-typeutils-CaseClassTypeInfo" class="headerlink" title="Exception in thread “main” java.lang.NoClassDefFoundError: org/apache/flink/api/scala/typeutils/CaseClassTypeInfo"></a>Exception in thread “main” java.lang.NoClassDefFoundError: org/apache/flink/api/scala/typeutils/CaseClassTypeInfo</h2><p>缺少jar文件，添加到maven<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.flink<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>flink-streaming-scala_$&#123;scala.compat.version&#125;<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;flink.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/9c2d12b5.html" rel="next" title="flink api 转换算子操作讲解">
+                <i class="fa fa-chevron-left"></i> flink api 转换算子操作讲解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/post/a7cf90d2.html" rel="prev" title="flink使用mysql作为输入与输出">
+                flink使用mysql作为输入与输出 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Roger Luo (Luo Dingjia)</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">24</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#框架模式"><span class="nav-number">1.</span> <span class="nav-text">框架模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#DataStream-DataSet与Table转换关系"><span class="nav-number">1.1.</span> <span class="nav-text">DataStream/DataSet与Table转换关系</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DataStream转Table"><span class="nav-number">1.1.1.</span> <span class="nav-text">DataStream转Table</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Table转DataStream"><span class="nav-number">1.1.2.</span> <span class="nav-text">Table转DataStream</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#例子"><span class="nav-number">2.</span> <span class="nav-text">例子</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#例子1"><span class="nav-number">2.1.</span> <span class="nav-text">例子1</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#错误"><span class="nav-number">3.</span> <span class="nav-text">错误</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL-validation-failed-Type-is-not-supported-Date"><span class="nav-number">3.1.</span> <span class="nav-text">SQL validation failed. Type is not supported: Date</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Exception-in-thread-“main”-java-lang-NoClassDefFoundError-org-apache-flink-api-scala-typeutils-CaseClassTypeInfo"><span class="nav-number">3.2.</span> <span class="nav-text">Exception in thread “main” java.lang.NoClassDefFoundError: org/apache/flink/api/scala/typeutils/CaseClassTypeInfo</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Roger Luo (Luo Dingjia)</span>
+
+  
+
+  
+</div>
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="site-uv" title="总访客量">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="site-pv" title="总访问量">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+    <span class="post-meta-divider">|</span>
+
+
+
+
+<div class="BbeiAn-info" ">
+  <a href="http://www.miitbeian.gov.cn">粤ICP备17113681号-1</a>
+  
+</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.2"></script>
+
+  <script src="/js/motion.js?v=7.1.2"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.2"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
