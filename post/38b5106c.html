@@ -98,18 +98,18 @@
 
 
 
-  <meta name="description" content="An abbreviation of a word follows the form firstletter number lastletter. Below are some examples of word abbreviations:">
-<meta name="keywords" content="leetcode,medium,algorithm,hashtable">
+  <meta name="description" content="集成mermaid的画图到hexo">
+<meta name="keywords" content="hexo,mermaid">
 <meta property="og:type" content="article">
-<meta property="og:title" content="LeetCode-288-Unqiue-Word-Abberviation">
-<meta property="og:url" content="https://rogersnowing.cn/post/6f8ad05a.html">
+<meta property="og:title" content="hexo集成mermaid画图">
+<meta property="og:url" content="https://rogersnowing.cn/post/38b5106c.html">
 <meta property="og:site_name" content="Roger&#39;s Note">
-<meta property="og:description" content="An abbreviation of a word follows the form firstletter number lastletter. Below are some examples of word abbreviations:">
+<meta property="og:description" content="集成mermaid的画图到hexo">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-06-03T06:42:32.714Z">
+<meta property="og:updated_time" content="2019-07-11T09:44:46.274Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="LeetCode-288-Unqiue-Word-Abberviation">
-<meta name="twitter:description" content="An abbreviation of a word follows the form firstletter number lastletter. Below are some examples of word abbreviations:">
+<meta name="twitter:title" content="hexo集成mermaid画图">
+<meta name="twitter:description" content="集成mermaid的画图到hexo">
 
 
 
@@ -117,7 +117,7 @@
 
   
   
-  <link rel="canonical" href="https://rogersnowing.cn/post/6f8ad05a">
+  <link rel="canonical" href="https://rogersnowing.cn/post/38b5106c">
 
 
 
@@ -127,7 +127,7 @@
   };
 </script>
 
-  <title>LeetCode-288-Unqiue-Word-Abberviation | Roger's Note</title>
+  <title>hexo集成mermaid画图 | Roger's Note</title>
   
 
 
@@ -296,7 +296,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://rogersnowing.cn/post/6f8ad05a.html">
+    <link itemprop="mainEntityOfPage" href="https://rogersnowing.cn/post/38b5106c.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Roger Luo (Luo Dingjia)">
@@ -313,7 +313,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">LeetCode-288-Unqiue-Word-Abberviation
+          <h1 class="post-title" itemprop="name headline">hexo集成mermaid画图
 
               
             
@@ -339,46 +339,16 @@
                 
               
 
-              <time title="创建时间：2019-04-02 23:13:48" itemprop="dateCreated datePublished" datetime="2019-04-02T23:13:48+08:00">2019-04-02</time>
+              <time title="创建时间：2019-07-11 16:55:10 / 修改时间：17:44:46" itemprop="dateCreated datePublished" datetime="2019-07-11T16:55:10+08:00">2019-07-11</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-06-03 14:42:32" itemprop="dateModified" datetime="2019-06-03T14:42:32+08:00">2019-06-03</time>
               
             
           </span>
 
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/algorithm/" itemprop="url" rel="index"><span itemprop="name">algorithm</span></a></span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -408,20 +378,30 @@
       
 
       
-        <p>An abbreviation of a word follows the form firstletter number lastletter. Below are some examples of word abbreviations:<br><a id="more"></a></p>
-<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a) it                      --&gt; it    (no abbreviation)</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">     1</span><br><span class="line">b) d|o|g                   --&gt; d1g</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">              1    1  1</span><br><span class="line">     1---5----0----5--8</span><br><span class="line">c) i|nternationalizatio|n  --&gt; i18n</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">              1</span><br><span class="line">     1---5----0</span><br><span class="line">d) l|ocalizatio|n          --&gt; l10n</span><br></pre></td></tr></table></figure>
-<p>Assume you have a dictionary and given a word, find whether its abbreviation is unique in the dictionary. A word’s abbreviation is unique if no other word from the dictionary has the same abbreviation.</p>
-<p><strong>Example:</strong></p>
-<p>Given dictionary = [ “deer”, “door”, “cake”, “card” ]</p>
-<p>isUnique(“dear”) -&gt; false</p>
-<p>isUnique(“cart”) -&gt; true</p>
-<p>isUnique(“cane”) -&gt; false</p>
-<p>isUnique(“make”) -&gt; true</p>
-<h1 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h1><p>通过字典构造hashtable，key是单词缩写，value是原单词，通过单词缩写查找是否存在该单词或者单词是否就是本身来判断是否唯一</p>
-<p>代码后面补充</p>
+        <p>集成mermaid的画图到hexo<br><a id="more"></a><br>这个也折腾我一下，网上的方法试了都不行，最后还是靠自己来解决。。。如果有朋友也同样遇到，可以参考下我的思路，即使方法不适合你，也可以参考问题定位方法。</p>
+<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>mermaid的画图还是凑合使用，可以方便画时序图，在<code>typora</code>就经常使用，换到hexo，发现不能用，这里给大家一个解决方案。</p>
+<h1 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h1><p>我先我的环境贴出来，版本不是绝对，只是参考而已<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">node v12.3.1</span><br><span class="line">npm v6.9.0</span><br><span class="line">hexo: 3.9.0</span><br><span class="line">hexo-cli: 2.0.0</span><br><span class="line">os: Darwin 18.6.0 darwin x64</span><br><span class="line">node: 12.3.1</span><br><span class="line">v8: 7.4.288.27-node.18</span><br><span class="line">uv: 1.29.1</span><br><span class="line">zlib: 1.2.11</span><br><span class="line">brotli: 1.0.7</span><br><span class="line">ares: 1.15.0</span><br><span class="line">modules: 72</span><br><span class="line">nghttp2: 1.38.0</span><br><span class="line">napi: 4</span><br><span class="line">llhttp: 1.1.3</span><br><span class="line">http_parser: 2.8.0</span><br><span class="line">openssl: 1.1.1b</span><br><span class="line">cldr: 35.1</span><br><span class="line">icu: 64.2</span><br><span class="line">tz: 2019a</span><br><span class="line">unicode: 12.1</span><br></pre></td></tr></table></figure></p>
+<h1 id="编辑工具vscode"><a href="#编辑工具vscode" class="headerlink" title="编辑工具vscode"></a>编辑工具vscode</h1><p>本人使用vscode来写blog，有需要的朋友可以参考下，就是安装插件<code>Mermaid Preview</code></p>
+<h1 id="配置hexo"><a href="#配置hexo" class="headerlink" title="配置hexo"></a>配置hexo</h1><p>需要做的只有三个地方</p>
+<h2 id="安装插件"><a href="#安装插件" class="headerlink" title="安装插件"></a>安装插件</h2><p>使用npm或者yarn都可以，我这边使用npm<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-filter-mermaid-diagrams --save</span><br></pre></td></tr></table></figure></p>
+<h2 id="修改主题文件-config-yml"><a href="#修改主题文件-config-yml" class="headerlink" title="修改主题文件_config.yml"></a>修改主题文件_config.yml</h2><p>这里很多教程说修改根目录下的，而不是主题，但是我发现我需要修改主题的，我用的是next，所以修改<code>themes/next</code>下的<code>_config.yml</code>，之前改成用根目录下不管用，后面发现原来next的配置中也有<code>mermaid</code>配置，如下所示<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Mermaid tag</span></span><br><span class="line"><span class="attr">mermaid:</span></span><br><span class="line"><span class="attr">  enable:</span> <span class="literal">false</span></span><br><span class="line">  <span class="comment"># Available themes: default | dark | forest | neutral</span></span><br><span class="line"><span class="attr">  theme:</span> <span class="string">forest</span></span><br><span class="line"><span class="attr">  cdn:</span> <span class="string">//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js</span></span><br><span class="line">  <span class="comment">#cdn: //cdnjs.cloudflare.com/ajax/libs/mermaid/8.0.0/mermaid.min.js</span></span><br></pre></td></tr></table></figure></p>
+<p>这个也是导致不成功的原因，因为<code>enable</code>属性就是<code>false</code>，怎么能成功呢。。。</p>
+<p>如果你检查了自己的主题的配置文件也具有这个样的配置项替换下如下，如果没有，可以贴到主题的配置文件中或者根目录的配置文件<code>_config.yml</code>中<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Mermaid tag</span></span><br><span class="line"><span class="attr">mermaid:</span> <span class="comment">## mermaid url https://github.com/knsv/mermaid</span></span><br><span class="line"><span class="attr">  enable:</span> <span class="literal">true</span>  <span class="comment"># default true</span></span><br><span class="line"><span class="attr">  version:</span> <span class="string">"7.1.2"</span> <span class="comment"># default v7.1.2</span></span><br><span class="line"><span class="attr">  options:</span>  <span class="comment"># find more api options from https://github.com/knsv/mermaid/blob/master/src/mermaidAPI.js</span></span><br><span class="line">    <span class="comment">#startOnload: true  // default true</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="修改主题layout引入mermaid-js"><a href="#修改主题layout引入mermaid-js" class="headerlink" title="修改主题layout引入mermaid.js"></a>修改主题layout引入mermaid.js</h2><p>我是next主题，所以我修改路径是<code>themes/next/layout/_partials/footer.swig</code>文件，在最后增加如下内容，使用其他主题的，也可以根据对应的架构修改相似的文件<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#123;%</span> <span class="string">if</span> <span class="string">theme.mermaid.enable</span> <span class="string">%&#125;</span></span><br><span class="line">  <span class="string">&lt;script</span> <span class="string">src='https://unpkg.com/mermaid@&#123;&#123;</span> <span class="string">theme.mermaid.version</span> <span class="string">&#125;&#125;/dist/mermaid.min.js'&gt;&lt;/script&gt;</span></span><br><span class="line">  <span class="string">&lt;script&gt;</span></span><br><span class="line">    <span class="string">if</span> <span class="string">(window.mermaid)</span> <span class="string">&#123;</span></span><br><span class="line">      <span class="string">mermaid.initialize(&#123;&#123;</span> <span class="string">JSON.stringify(theme.mermaid.options)</span> <span class="string">&#125;&#125;);</span></span><br><span class="line">    <span class="string">&#125;</span></span><br><span class="line">  <span class="string">&lt;/script&gt;</span></span><br><span class="line"><span class="string">&#123;%</span> <span class="string">endif</span> <span class="string">%&#125;</span></span><br></pre></td></tr></table></figure></p>
+<p>上述目的就是引入js文件</p>
+<h2 id="重启hexo"><a href="#重启hexo" class="headerlink" title="重启hexo"></a>重启hexo</h2><p>先清，<code>hexo clean</code> ，再生 <code>hexo g</code>,再跑 <code>hexo s</code></p>
+<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><p>使用如下代码快速验证下ide或者hexo效果</p>
+<p>代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">` ` `mermaid</span><br><span class="line">graph TD;</span><br><span class="line">    A--&gt;B;</span><br><span class="line">    A--&gt;C;</span><br><span class="line">    B--&gt;D;</span><br><span class="line">    C--&gt;D;</span><br><span class="line">` ` `</span><br></pre></td></tr></table></figure>
+<p>把首尾去掉反引号的空格去掉。</p>
+<p>效果如下：</p>
+<pre class="mermaid">graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;</pre>
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>如果发现没作用，打开浏览器的开发者模式看下是否拉到js文件，我就是这么解决问题。</p>
 
       
     </div>
@@ -445,13 +425,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/leetcode/" rel="tag"># leetcode</a>
+            <a href="/tags/hexo/" rel="tag"># hexo</a>
           
-            <a href="/tags/medium/" rel="tag"># medium</a>
-          
-            <a href="/tags/algorithm/" rel="tag"># algorithm</a>
-          
-            <a href="/tags/hashtable/" rel="tag"># hashtable</a>
+            <a href="/tags/mermaid/" rel="tag"># mermaid</a>
           
         </div>
       
@@ -464,8 +440,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/post/10c92f36.html" rel="next" title="LeetCode-305-Number-of-Island-II">
-                <i class="fa fa-chevron-left"></i> LeetCode-305-Number-of-Island-II
+              <a href="/post/21d79e1c.html" rel="next" title="flink流式查询mysql方案">
+                <i class="fa fa-chevron-left"></i> flink流式查询mysql方案
               </a>
             
           </div>
@@ -473,10 +449,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/post/e1774e9d.html" rel="prev" title="java的hashmap详解">
-                java的hashmap详解 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -675,7 +647,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Question"><span class="nav-number">1.</span> <span class="nav-text">Question</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Solution"><span class="nav-number">2.</span> <span class="nav-text">Solution</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#环境"><span class="nav-number">2.</span> <span class="nav-text">环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编辑工具vscode"><span class="nav-number">3.</span> <span class="nav-text">编辑工具vscode</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置hexo"><span class="nav-number">4.</span> <span class="nav-text">配置hexo</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装插件"><span class="nav-number">4.1.</span> <span class="nav-text">安装插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改主题文件-config-yml"><span class="nav-number">4.2.</span> <span class="nav-text">修改主题文件_config.yml</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改主题layout引入mermaid-js"><span class="nav-number">4.3.</span> <span class="nav-text">修改主题layout引入mermaid.js</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重启hexo"><span class="nav-number">4.4.</span> <span class="nav-text">重启hexo</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#测试"><span class="nav-number">5.</span> <span class="nav-text">测试</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
