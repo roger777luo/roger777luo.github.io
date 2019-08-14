@@ -106,7 +106,7 @@
 <meta property="og:site_name" content="Roger&#39;s Note">
 <meta property="og:description" content="背景：如何实现flink流式处理mysql">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-07-11T08:42:02.748Z">
+<meta property="og:updated_time" content="2019-07-12T09:11:30.791Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="flink流式查询mysql方案">
 <meta name="twitter:description" content="背景：如何实现flink流式处理mysql">
@@ -339,12 +339,24 @@
                 
               
 
-              <time title="创建时间：2019-07-11 15:52:40 / 修改时间：16:42:02" itemprop="dateCreated datePublished" datetime="2019-07-11T15:52:40+08:00">2019-07-11</time>
+              <time title="创建时间：2019-07-11 15:52:40" itemprop="dateCreated datePublished" datetime="2019-07-11T15:52:40+08:00">2019-07-11</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-07-12 17:11:30" itemprop="dateModified" datetime="2019-07-12T17:11:30+08:00">2019-07-12</time>
               
             
           </span>
@@ -388,13 +400,39 @@
 <p><strong><code>主函数</code></strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();</span><br><span class="line"></span><br><span class="line">    DataStreamSource&lt;Tuple2&lt;String, Date&gt;&gt; dsSrc = env.addSource(<span class="keyword">new</span> UserInfoReader());</span><br><span class="line"></span><br><span class="line">    dsSrc.print();</span><br><span class="line"></span><br><span class="line">    env.execute(<span class="string">"run at "</span> + TestStreamMysqlQuery.class);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>上述代码就是sourcer没隔1秒查询数据，同时将每个数据都输出，这样就没有用到flink的强大的功能。</p>
 <h2 id="方案2-业务耦合"><a href="#方案2-业务耦合" class="headerlink" title="方案2 业务耦合"></a>方案2 业务耦合</h2><h3 id="简单暴力"><a href="#简单暴力" class="headerlink" title="简单暴力"></a>简单暴力</h3><p>基于之前的<code>UserInfo</code>表来说，每次注册用户都通过消息中间件来传输告诉flink，也就是<code>数据埋点</code>，这个不管是通过修改业务代码或者使用数据库的触发器来说，都是需要修改代码或者提供存储过程来实现，缺点可想而知，重！！！</p>
-<pre class="mermaid">graph TD;
-    A-->B;
-    A-->C;
-    B-->D;
-    C-->D;</pre>
+<p><strong>触发器模式</strong></p>
+<pre class="mermaid">graph LR;
+    业务 --> 数据库;
+    数据库 --> 触发器;
+    触发器 --> 消息中间件;
+    消息中间件--> Flink;</pre>
+**数据埋点**
+<pre class="mermaid">graph LR;
+    业务 --> 数据库;
+    业务 --> 异步同步业务;
+    异步同步业务 --> 消息中间件;
+    消息中间件--> Flink;</pre>
+上面的方案不管是性能吞吐，或者一致性的都不应完美
 
-<p>###<br>要不修改<code>userinfo</code>表来增加自增序列主键，这样通过<code>Sourcer</code>来记录对应的游标位置来判断哪些是新数据，这个代码就演示了，这里问题是，业务耦合性重，每个表都需要遵守这个规则，同时存在作业故障恢复机制，不就是通过写文件或者使用flink的state来存储，不过怎么说业务代码支持。</p>
+### 退一步，调整表结构
+要不修改`userinfo`表来增加自增序列主键，这样通过`Sourcer`来记录对应的游标位置来判断哪些是新数据，这个代码就演示了，这里问题是，业务耦合性重，每个表都需要遵守这个规则，同时存在作业故障恢复机制，不就是通过写文件或者使用flink的state来存储，不过怎么说业务代码支持。
+<pre class="mermaid">graph LR;
+    业务 --> 数据库;
+    数据库 --> Sourcer-Offset;
+    Sourcer-Offset --> Flink;</pre>
+变形的kafka，自己维护offset，需要考虑故障问题
+
+## 采用非侵入式处理数据
+采用canal读取mysql的binlog来写入到kafka/rmq来解决，具体搭建本机测试环境参考博客里的文章。
+
+<pre class="mermaid">graph LR;
+    业务-->数据库
+    数据库-->canal
+    canal-->
+    数据库 --> Sourcer-Offset;
+    Sourcer-Offset --> Flink;</pre>
+
+
 
       
     </div>
@@ -514,7 +552,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">21</span>
+                    <span class="site-state-item-count">29</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -606,7 +644,19 @@
                     
                       
                     
-                    <span class="site-state-item-count">26</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">32</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

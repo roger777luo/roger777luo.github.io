@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+  <meta name="google-site-verification" content="byhWoQUfSwWgh2OkIV9b7co8brBG6OLSZwm9ivUtuZ0">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.2" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="搭建canal与kafka环境">
+<meta name="keywords" content="canal,kafka,rocketmq">
+<meta property="og:type" content="article">
+<meta property="og:title" content="canal与kafka环境搭建">
+<meta property="og:url" content="https://rogersnowing.cn/post/1becb064.html">
+<meta property="og:site_name" content="Roger&#39;s Note">
+<meta property="og:description" content="搭建canal与kafka环境">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-07-16T02:16:20.141Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="canal与kafka环境搭建">
+<meta name="twitter:description" content="搭建canal与kafka环境">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://rogersnowing.cn/post/1becb064">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>canal与kafka环境搭建 | Roger's Note</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Roger's Note</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Salvation lies within</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://rogersnowing.cn/post/1becb064.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Roger Luo (Luo Dingjia)">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Roger's Note">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">canal与kafka环境搭建
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-11 19:53:01" itemprop="dateCreated datePublished" datetime="2019-07-11T19:53:01+08:00">2019-07-11</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-07-16 10:16:20" itemprop="dateModified" datetime="2019-07-16T10:16:20+08:00">2019-07-16</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>搭建canal与kafka环境<br><a id="more"></a></p>
+<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>canal默认在1.1.1后默认支持将canal server接收到的binlog数据直接投递到MQ, 目前默认支持的MQ系统有：<code>kafka</code>跟<code>rocketmq</code></p>
+<p>为了方便操作，这里使用docker-compose来搭建环境</p>
+<h1 id="docker搭建kafka环境"><a href="#docker搭建kafka环境" class="headerlink" title="docker搭建kafka环境"></a>docker搭建kafka环境</h1><p><code>kafka</code>依赖<code>zookeeper</code>不管是<code>kafka</code>是要单节点还是集群，都需要依赖他，这里提供一个简单的docker_file来快速搭建<code>kafka</code>跟<code>zookeeper</code>环境</p>
+<p><strong>kafka_docekr_compose.yml</strong><br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">'3'</span></span><br><span class="line"><span class="comment"># &lt;!-- docker-compose的兼容版本，可以按实际的docker的大版本号配置 --&gt;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="comment"># &lt;!--定义zk层服务--&gt;</span></span><br><span class="line"><span class="attr">  zookeeper:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">zookeeper</span></span><br><span class="line"><span class="attr">    container_name:</span> <span class="string">zoo</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">"2181:2181"</span></span><br><span class="line"><span class="comment"># &lt;!--定义Kafka层--&gt;</span></span><br><span class="line"><span class="attr">  kafka:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">wurstmeister/kafka:2.11-1.1.1</span></span><br><span class="line"><span class="attr">    container_name:</span> <span class="string">kafka</span></span><br><span class="line">    <span class="comment"># &lt;!--优先使用基础镜像，而不是本地Dockerfile的重新构建方式，实际情况可以与build配置项二选一，因此下面一行注释掉--&gt;</span></span><br><span class="line">    <span class="comment"># &lt;!-- build: .--&gt;</span></span><br><span class="line"><span class="attr">    depends_on:</span> <span class="string">[</span> <span class="string">zookeeper</span> <span class="string">]</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">"9092:9092"</span></span><br><span class="line"><span class="attr">    environment:</span></span><br><span class="line"><span class="attr">      KAFKA_BROKER_NO:</span> <span class="number">1</span></span><br><span class="line"><span class="attr">      KAFKA_ADVERTISED_HOST_NAME:</span> <span class="string">kafka</span></span><br><span class="line"><span class="attr">      KAFKA_CREATE_TOPICS:</span> <span class="string">"test:1:1"</span></span><br><span class="line"><span class="attr">      KAFKA_ZOOKEEPER_CONNECT:</span> <span class="attr">zookeeper:2181</span></span><br><span class="line"><span class="attr">      KAFKA_ADVERTISED_LISTENERS:</span> <span class="attr">PLAINTEXT://kafka:9092</span></span><br></pre></td></tr></table></figure></p>
+<p>通过命令拉起容器<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose -f kafka_docekr_compose.yml up -d</span><br></pre></td></tr></table></figure></p>
+<p>打开两个登陆到kafka容器窗口，来模拟生产者跟消费者来验证<code>kafka</code>的环境完整性</p>
+<p><strong>生产者</strong><br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kafka-topics.sh --zookeeper zookeeper:2181 --create --replication-factor 1 --partitions 1 --topic kafkatest <span class="comment"># 创建topic</span></span><br><span class="line">kafka-console-producer.sh --broker-list localhost:9092 --topic kafkatest <span class="comment"># 拉起kafka生产者命令行</span></span><br><span class="line"><span class="comment"># 删除topic</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>消费者</strong><br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic kafkatest --from-beginning <span class="comment"># 拉起kafka的消费者</span></span><br></pre></td></tr></table></figure></p>
+<p>在生产者里输入任何信息查看下消费者窗口是否打印出来</p>
+<h1 id="docker搭建跑canal"><a href="#docker搭建跑canal" class="headerlink" title="docker搭建跑canal"></a>docker搭建跑canal</h1><p>这里容器需要指定跟kafka通网络下指定<code>--network</code>，不然连接不上，这里已经认为你的mysql已经跑起来，具体配置参考<code>使用canal来监听mysql binlog</code>文章。<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">docker</span> <span class="string">run</span> <span class="bullet">--name</span> <span class="string">canal-server</span> <span class="string">\</span></span><br><span class="line"><span class="bullet">-</span><span class="string">e</span> <span class="string">canal.destinations=test</span> <span class="string">\</span></span><br><span class="line"><span class="bullet">-</span><span class="string">e</span> <span class="string">canal.instance.master.address=172.18.0.2:3306</span> <span class="string">\</span></span><br><span class="line"><span class="bullet">-</span><span class="string">e</span> <span class="string">canal.instance.dbUsername=canal</span> <span class="string">\</span></span><br><span class="line"><span class="bullet">-</span><span class="string">e</span> <span class="string">canal.instance.dbPassword=canal</span> <span class="string">\</span></span><br><span class="line"><span class="bullet">-</span><span class="string">e</span> <span class="string">canal.instance.connectionCharset=UTF-8</span> <span class="string">\</span></span><br><span class="line"><span class="bullet">-</span><span class="string">e</span> <span class="string">canal.instance.tsdb.enable=false</span> <span class="string">\</span></span><br><span class="line"><span class="bullet">-</span><span class="string">e</span> <span class="string">canal.instance.gtidon=false</span> <span class="string">\</span></span><br><span class="line"><span class="bullet">-</span><span class="string">e</span> <span class="string">canal.serverMode=kafka</span> <span class="string">\</span></span><br><span class="line"><span class="bullet">-</span><span class="string">e</span> <span class="string">canal.mq.servers=172.18.0.4:9092</span> <span class="string">\</span></span><br><span class="line"><span class="bullet">-</span><span class="string">e</span> <span class="string">canal.mq.topic=kafkatest</span> <span class="string">\</span></span><br><span class="line"><span class="bullet">-</span><span class="string">e</span> <span class="string">canal.mq.partition=0</span> <span class="string">\</span></span><br><span class="line"><span class="bullet">-</span><span class="bullet">-net</span> <span class="string">bigdata_default</span> <span class="string">\</span></span><br><span class="line"><span class="bullet">-</span><span class="string">d</span> <span class="string">canal/canal-server:v1.1.3</span></span><br></pre></td></tr></table></figure></p>
+<p>把容器跑起来</p>
+<h1 id="测试binlog到kafka"><a href="#测试binlog到kafka" class="headerlink" title="测试binlog到kafka"></a>测试binlog到kafka</h1><ol>
+<li>登陆到kafka容器中打开消费者命令行</li>
+</ol>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic kafkatest --from-beginning</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li><p>修改数据库提交更新</p>
+</li>
+<li><p>查看消费者命令行打印如下内容:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bash-4.4<span class="comment"># kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic kafkatest --from-beginning</span></span><br><span class="line">&#123;<span class="string">"data"</span>:[&#123;<span class="string">"name"</span>:<span class="string">"lucy"</span>,<span class="string">"reg_date"</span>:<span class="string">"2019-07-12 04:28:59"</span>&#125;],<span class="string">"database"</span>:<span class="string">"test"</span>,<span class="string">"es"</span>:1562921873000,<span class="string">"id"</span>:1,<span class="string">"isDdl"</span>:<span class="literal">false</span>,<span class="string">"mysqlType"</span>:&#123;<span class="string">"name"</span>:<span class="string">"varchar(20)"</span>,<span class="string">"reg_date"</span>:<span class="string">"datetime"</span>&#125;,<span class="string">"old"</span>:[&#123;<span class="string">"reg_date"</span>:<span class="string">"2019-07-12 04:26:59"</span>&#125;],<span class="string">"pkNames"</span>:null,<span class="string">"sql"</span>:<span class="string">""</span>,<span class="string">"sqlType"</span>:&#123;<span class="string">"name"</span>:12,<span class="string">"reg_date"</span>:93&#125;,<span class="string">"table"</span>:<span class="string">"userinfo"</span>,<span class="string">"ts"</span>:1562921874466,<span class="string">"type"</span>:<span class="string">"UPDATE"</span>&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>kafka跟canal已经联通了</p>
+<h1 id="错误"><a href="#错误" class="headerlink" title="错误"></a>错误</h1><h2 id="kakfa错误"><a href="#kakfa错误" class="headerlink" title="kakfa错误"></a>kakfa错误</h2><h3 id="Failed-to-elect-leader-for-partition-kafkatest-0-under-strategy-OfflinePartitionLeaderElectionStrategy"><a href="#Failed-to-elect-leader-for-partition-kafkatest-0-under-strategy-OfflinePartitionLeaderElectionStrategy" class="headerlink" title="Failed to elect leader for partition kafkatest-0 under strategy OfflinePartitionLeaderElectionStrategy"></a>Failed to elect leader for partition kafkatest-0 under strategy OfflinePartitionLeaderElectionStrategy</h3><p>检查下是否连接到zk服务器</p>
+<h3 id="Connection-to-node-1-could-not-be-established-Broker-may-not-be-available"><a href="#Connection-to-node-1-could-not-be-established-Broker-may-not-be-available" class="headerlink" title="Connection to node -1 could not be established. Broker may not be available."></a>Connection to node -1 could not be established. Broker may not be available.</h3><p>检查下kafka运行配置参数<code>KAFKA_ADVERTISED_HOST_NAME</code>与<code>KAFKA_ADVERTISED_LISTENERS</code>是否正确，如果是本地测试搭建的单机模式，可以使用<code>127.0.0.1</code>；如果是使用容器，就要改成kafka在容器网络中的ip，例如改成成<code>172.18.0.x</code>等，如果是远程服务器，就改成对应服务器ip</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/canal/" rel="tag"># canal</a>
+          
+            <a href="/tags/kafka/" rel="tag"># kafka</a>
+          
+            <a href="/tags/rocketmq/" rel="tag"># rocketmq</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/38b5106c.html" rel="next" title="hexo集成mermaid画图">
+                <i class="fa fa-chevron-left"></i> hexo集成mermaid画图
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/post/f0cb8f64.html" rel="prev" title="docker-compose网络配置">
+                docker-compose网络配置 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Roger Luo (Luo Dingjia)</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">32</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#docker搭建kafka环境"><span class="nav-number">2.</span> <span class="nav-text">docker搭建kafka环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#docker搭建跑canal"><span class="nav-number">3.</span> <span class="nav-text">docker搭建跑canal</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#测试binlog到kafka"><span class="nav-number">4.</span> <span class="nav-text">测试binlog到kafka</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#错误"><span class="nav-number">5.</span> <span class="nav-text">错误</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#kakfa错误"><span class="nav-number">5.1.</span> <span class="nav-text">kakfa错误</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Failed-to-elect-leader-for-partition-kafkatest-0-under-strategy-OfflinePartitionLeaderElectionStrategy"><span class="nav-number">5.1.1.</span> <span class="nav-text">Failed to elect leader for partition kafkatest-0 under strategy OfflinePartitionLeaderElectionStrategy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Connection-to-node-1-could-not-be-established-Broker-may-not-be-available"><span class="nav-number">5.1.2.</span> <span class="nav-text">Connection to node -1 could not be established. Broker may not be available.</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Roger Luo (Luo Dingjia)</span>
+
+  
+
+  
+</div>
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="site-uv" title="总访客量">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="site-pv" title="总访问量">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+    <span class="post-meta-divider">|</span>
+
+
+
+
+  <script src="https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js"></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize("");
+    }
+  </script>
+
+
+
+<div class="BbeiAn-info"">
+  <a href="http://www.miitbeian.gov.cn">粤ICP备17113681号-1</a>
+  
+</div>
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.2"></script>
+
+  <script src="/js/motion.js?v=7.1.2"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.2"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+<script>
+if ($('body').find('pre.mermaid').length) {
+  $.ajax({
+    type: 'GET',
+    url: '',
+    dataType: 'script',
+    cache: true,
+    success: function() {
+      mermaid.initialize({
+        theme: '',
+        logLevel: 3,
+        flowchart: { curve: 'linear' },
+        gantt: { axisFormat: '%m/%d/%Y' },
+        sequence: { actorMargin: 50 }
+      });
+    }
+  });
+}
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
