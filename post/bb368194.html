@@ -98,13 +98,17 @@
 
 
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Roger&#39;s Note">
-<meta property="og:url" content="https://rogersnowing.cn/tags/hexo-plugin/index.html">
+  <meta name="description" content="nohup跟&amp;amp;区别">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nohup跟&amp;区别">
+<meta property="og:url" content="https://rogersnowing.cn/post/bb368194.html">
 <meta property="og:site_name" content="Roger&#39;s Note">
+<meta property="og:description" content="nohup跟&amp;amp;区别">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-08-29T06:38:07.517Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Roger&#39;s Note">
+<meta name="twitter:title" content="nohup跟&amp;区别">
+<meta name="twitter:description" content="nohup跟&amp;amp;区别">
 
 
 
@@ -112,7 +116,7 @@
 
   
   
-  <link rel="canonical" href="https://rogersnowing.cn/tags/hexo-plugin/">
+  <link rel="canonical" href="https://rogersnowing.cn/post/bb368194">
 
 
 
@@ -122,7 +126,7 @@
   };
 </script>
 
-  <title>标签: hexo-plugin | Roger's Note</title>
+  <title>nohup跟&区别 | Roger's Note</title>
   
 
 
@@ -170,7 +174,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -251,19 +255,6 @@
   
     
 
-    
-    
-      
-      
-    
-      
-      
-    
-    
-
-  
-
-
   
 
   
@@ -288,57 +279,186 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block tag">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>hexo-plugin<small>标签</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
+
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://rogersnowing.cn/post/bb368194.html">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Roger Luo (Luo Dingjia)">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Roger's Note">
+    </span>
+
+    
+      <header class="post-header">
+
         
-          <a class="post-title-link" href="/post/121059af.html" itemprop="url">
-            
-              <span itemprop="name">hexo推荐插件配置</span>
-            
-          </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">nohup跟&区别
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-03-25T11:29:52+08:00" content="2019-03-25">
-          03-25
-        </time>
-      </div>
+              
+            
+          </h1>
+        
 
-    </header>
-  </article>
+        <div class="post-meta">
+          <span class="post-time">
 
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-29 14:33:25 / 修改时间：14:38:07" itemprop="dateCreated datePublished" datetime="2019-08-29T14:33:25+08:00">2019-08-29</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>nohup跟&amp;区别<br><a id="more"></a></p>
+<p>主要是解决不通的信号问题，linux的信号如下：</p>
+<p>SIGHUP /<em> hangup </em>/</p>
+<pre><code>SIGHUP，hong up ，挂断。本信号在用户终端连接(正常或非正常)结束时发出, 通常是在终端的控制进程结束时, 通知同一session内的各个作业, 这时它们与控制终端不再关联。
+
+登录Linux时，系统会分配给登录用户一个终端(Session)。在这个终端运行的所有程序，包括前台进程组和 后台进程组，一般都属于这个 Session。当用户退出Linux登录时，前台进程组和后台有对终端输出的进程将会收到SIGHUP信号。这个信号的默认操作为终止进程，因此前台进 程组和后台有终端输出的进程就会中止。不过可以捕获这个信号，比如wget能捕获SIGHUP信号，并忽略它，这样就算退出了Linux登录，wget也 能继续下载。
+
+此外，对于与终端脱离关系的守护进程，这个信号用于通知它重新读取配置文件。
+</code></pre><p>SIGINT /<em> interrupt </em>/</p>
+<pre><code>程序终止(interrupt)信号, 在用户键入INTR字符(通常是Ctrl+C)时发出，用于通知前台进程组终止进程。
+</code></pre><p>使用&amp;后台运行程序：</p>
+<p>结果会输出到终端</p>
+<p>使用Ctrl + C发送SIGINT信号，程序免疫</p>
+<p>关闭session发送SIGHUP信号，程序关闭</p>
+<p>使用nohup运行程序：</p>
+<p>结果默认会输出到nohup.out</p>
+<p>使用Ctrl + C发送SIGINT信号，程序关闭</p>
+<p>关闭session发送SIGHUP信号，程序免疫</p>
+<p>所以使用nohup &amp;的联合就可以实现即时当前回会话关掉（nohup）也可以后台（&amp;）执行，不阻塞当前客户端交互。</p>
 
       
     </div>
 
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/f585662c.html" rel="next" title="单机搭建hadoop环境">
+                <i class="fa fa-chevron-left"></i> 单机搭建hadoop环境
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+  </div>
 
 
           </div>
           
+
+  
+
+
 
         </div>
         
@@ -659,6 +779,10 @@
 
 
   
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
 
   
 
@@ -674,6 +798,8 @@
 
   
 
+
+  
 
 
   
