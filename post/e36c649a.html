@@ -106,7 +106,7 @@
 <meta property="og:site_name" content="Roger&#39;s Note">
 <meta property="og:description" content="spark standalone集群搭建">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-08-29T07:21:31.954Z">
+<meta property="og:updated_time" content="2019-09-03T01:39:08.909Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="spark standalone集群搭建">
 <meta name="twitter:description" content="spark standalone集群搭建">
@@ -339,12 +339,24 @@
                 
               
 
-              <time title="创建时间：2019-08-29 14:41:20 / 修改时间：15:21:31" itemprop="dateCreated datePublished" datetime="2019-08-29T14:41:20+08:00">2019-08-29</time>
+              <time title="创建时间：2019-08-29 14:41:20" itemprop="dateCreated datePublished" datetime="2019-08-29T14:41:20+08:00">2019-08-29</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-09-03 09:39:08" itemprop="dateModified" datetime="2019-09-03T09:39:08+08:00">2019-09-03</time>
               
             
           </span>
@@ -388,13 +400,19 @@
 <p>设置后密码后，通过<code>ssh localhost</code>来看下是否可以实现登陆成功</p>
 <p><strong>注意</strong> 对于windows用户，可以需要配置sshd环境；对于mac用户，需要在<code>设置-sharing-Remote Login</code>中将服务打开，同时设置哪些用户可以登陆</p>
 <p>同时配置<code>SPARK_SSH_OPTS</code>环境变量到/etc/profile下<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> HADOOP_SSH_OPTS=<span class="string">"-i /Users/roger/.ssh/id_rsa_spark -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "</span></span><br></pre></td></tr></table></figure></p>
-<p>指向刚生成的私钥</p>
+<p>指向刚生成的私钥，如果不配置密钥，可以通过环境变量设置<code>SPARK_SSH_FOREGROUND</code>配置ssh的密码</p>
 <h1 id="配置spark"><a href="#配置spark" class="headerlink" title="配置spark"></a>配置spark</h1><p>设置配置文件<code>spark-env.sh</code>，先从<code>spark-env.sh.template</code>赋值过来<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_211.jdk/Contents/Home</span><br><span class="line"><span class="built_in">export</span> SPARK_MASTER_HOST=localhost</span><br><span class="line"><span class="built_in">export</span> SPARK_MASTER_PORT=7077</span><br><span class="line"><span class="built_in">export</span> SPARK_MASTER_WEBUI_PORT=18080</span><br></pre></td></tr></table></figure></p>
 <p>这里是这master的ip，端口跟webui的端口，按照自己情况设置，不设置的话，缺省webui是8080</p>
 <p>同时<code>spark-defaults.conf.template</code>复制成<code>spark-defaults.conf</code></p>
-<p>同时<code>slaves.template</code>复制成<code>slaves</code>，里面设置如下：<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">localhost</span><br><span class="line">localhost</span><br></pre></td></tr></table></figure></p>
-<p>生成两个worker进程</p>
+<p>同时<code>slaves.template</code>复制成<code>slaves</code>，修改内容如下：<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">localhost</span><br></pre></td></tr></table></figure></p>
+<p>表示使用本机作为其中一个worker</p>
 <p>同时<code>log4j.properties.template</code>复制成<code>log4j.properties</code></p>
+<h1 id="启动master"><a href="#启动master" class="headerlink" title="启动master"></a>启动master</h1><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$&#123;SPARK_HOME&#125;</span>/sbin/start-master.sh</span><br></pre></td></tr></table></figure>
+<h1 id="启动slave"><a href="#启动slave" class="headerlink" title="启动slave"></a>启动slave</h1><p>如果配置<code>conf/slaves</code>，需要从这里起来<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$&#123;SPARK_HOME&#125;</span>/sbin/start-slaves.sh</span><br></pre></td></tr></table></figure></p>
+<h1 id="提交java作业"><a href="#提交java作业" class="headerlink" title="提交java作业"></a>提交java作业</h1><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bin/spark-submit --class org.apache.spark.examples.SparkPi --master spark://localhost:7077 examples/jars/spark-examples_2.11-2.4.3.jar</span><br></pre></td></tr></table></figure>
+<p>查看结果输出如下<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">19/08/30 13:58:43 WARN NativeCodeLoader: Unable to load native-hadoop library <span class="keyword">for</span> your platform... using <span class="built_in">builtin</span>-java classes <span class="built_in">where</span> applicable</span><br><span class="line">Pi is roughly 3.146315731578658</span><br></pre></td></tr></table></figure></p>
+<h1 id="提交python作业"><a href="#提交python作业" class="headerlink" title="提交python作业"></a>提交python作业</h1><p>提供一个分词功能<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/spark-submit --master spark://localhost:7077  examples/roger/workcount.py ./README.md</span><br></pre></td></tr></table></figure></p>
+<p>查看页面可以看到对应的作业记录，至此本地的spark standalone环境搭建完成</p>
 
       
     </div>
@@ -514,7 +532,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">33</span>
+                    <span class="site-state-item-count">35</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -634,7 +652,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">40</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">42</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -672,7 +694,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安装jdk"><span class="nav-number">1.</span> <span class="nav-text">安装jdk</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装spark"><span class="nav-number">2.</span> <span class="nav-text">安装spark</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置ssh"><span class="nav-number">3.</span> <span class="nav-text">配置ssh</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置spark"><span class="nav-number">4.</span> <span class="nav-text">配置spark</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安装jdk"><span class="nav-number">1.</span> <span class="nav-text">安装jdk</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装spark"><span class="nav-number">2.</span> <span class="nav-text">安装spark</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置ssh"><span class="nav-number">3.</span> <span class="nav-text">配置ssh</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置spark"><span class="nav-number">4.</span> <span class="nav-text">配置spark</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#启动master"><span class="nav-number">5.</span> <span class="nav-text">启动master</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#启动slave"><span class="nav-number">6.</span> <span class="nav-text">启动slave</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#提交java作业"><span class="nav-number">7.</span> <span class="nav-text">提交java作业</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#提交python作业"><span class="nav-number">8.</span> <span class="nav-text">提交python作业</span></a></li></ol></div>
             
 
           </div>
