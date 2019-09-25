@@ -98,21 +98,23 @@
 
 
 
-  <meta name="description" content="一般企业都提供有线网跟无线网，有线网专门用来访问公司内部网络（通常采用的是私用ip来配置），而外网是采用wifi来访问">
-<meta name="keywords" content="network,macos">
+  <meta name="description" content="zeppelin使用mysql数据库">
+<meta name="keywords" content="mysql,zeppelin">
 <meta property="og:type" content="article">
-<meta property="og:title" content="macos有线网无限网双网配置">
-<meta property="og:url" content="https://rogersnowing.cn/post/7a35b900.html">
+<meta property="og:title" content="zeppelin系列3-mysql连接">
+<meta property="og:url" content="https://rogersnowing.cn/post/9464abf5.html">
 <meta property="og:site_name" content="Roger&#39;s Note">
-<meta property="og:description" content="一般企业都提供有线网跟无线网，有线网专门用来访问公司内部网络（通常采用的是私用ip来配置），而外网是采用wifi来访问">
+<meta property="og:description" content="zeppelin使用mysql数据库">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/macos/macos_network_config_1.png">
-<meta property="og:image" content="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/macos/macos_network_config_2.png">
-<meta property="og:updated_time" content="2019-06-19T07:04:01.267Z">
+<meta property="og:image" content="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/zeppelin/Screenshot%202019-09-25%20at%2017.13.21.png">
+<meta property="og:image" content="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/zeppelin/Screenshot%202019-09-25%20at%2017.15.29.png">
+<meta property="og:image" content="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/zeppelin/Screenshot%202019-09-25%20at%2017.18.50.png">
+<meta property="og:image" content="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/zeppelin/Screenshot%202019-09-25%20at%2017.20.20.png">
+<meta property="og:updated_time" content="2019-09-25T09:29:59.769Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="macos有线网无限网双网配置">
-<meta name="twitter:description" content="一般企业都提供有线网跟无线网，有线网专门用来访问公司内部网络（通常采用的是私用ip来配置），而外网是采用wifi来访问">
-<meta name="twitter:image" content="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/macos/macos_network_config_1.png">
+<meta name="twitter:title" content="zeppelin系列3-mysql连接">
+<meta name="twitter:description" content="zeppelin使用mysql数据库">
+<meta name="twitter:image" content="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/zeppelin/Screenshot%202019-09-25%20at%2017.13.21.png">
 
 
 
@@ -120,7 +122,7 @@
 
   
   
-  <link rel="canonical" href="https://rogersnowing.cn/post/7a35b900">
+  <link rel="canonical" href="https://rogersnowing.cn/post/9464abf5">
 
 
 
@@ -130,7 +132,7 @@
   };
 </script>
 
-  <title>macos有线网无限网双网配置 | Roger's Note</title>
+  <title>zeppelin系列3-mysql连接 | Roger's Note</title>
   
 
 
@@ -299,7 +301,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://rogersnowing.cn/post/7a35b900.html">
+    <link itemprop="mainEntityOfPage" href="https://rogersnowing.cn/post/9464abf5.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Roger Luo (Luo Dingjia)">
@@ -316,7 +318,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">macos有线网无限网双网配置
+          <h1 class="post-title" itemprop="name headline">zeppelin系列3-mysql连接
 
               
             
@@ -342,7 +344,7 @@
                 
               
 
-              <time title="创建时间：2019-06-19 14:51:38 / 修改时间：15:04:01" itemprop="dateCreated datePublished" datetime="2019-06-19T14:51:38+08:00">2019-06-19</time>
+              <time title="创建时间：2019-09-25 16:51:16 / 修改时间：17:29:59" itemprop="dateCreated datePublished" datetime="2019-09-25T16:51:16+08:00">2019-09-25</time>
             
 
             
@@ -381,11 +383,23 @@
       
 
       
-        <p>一般企业都提供有线网跟无线网，有线网专门用来访问公司内部网络（通常采用的是私用ip来配置），而外网是采用wifi来访问<br><a id="more"></a></p>
-<p>配置方式： System Perferencecs-&gt;network, 点击左下角齿轮，“Set Service Order”，如下图</p>
-<p><img src="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/macos/macos_network_config_1.png" alt="img"></p>
-<p>然后置顶wifi的配置</p>
-<p><img src="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/macos/macos_network_config_2.png" alt="img"></p>
+        <p>zeppelin使用mysql数据库<br><a id="more"></a></p>
+<h1 id="导入依赖库"><a href="#导入依赖库" class="headerlink" title="导入依赖库"></a>导入依赖库</h1><p>有两种导入方式</p>
+<ul>
+<li>通过maven进行导入，在如下截图添加<code>mysql:mysql-connector-java:5.1.38</code><br><img src="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/zeppelin/Screenshot%202019-09-25%20at%2017.13.21.png" alt="img"><br>这里是通过线上下载对应jar，缺点就是慢</li>
+<li>通过本地进行导入，在如下截图添加具体的jar对应的物理地址<br><img src="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/zeppelin/Screenshot%202019-09-25%20at%2017.15.29.png" alt="img"><br>这个好处就是快，缺点就是需要了解自己本地jar地址<h1 id="创建自定义解析器"><a href="#创建自定义解析器" class="headerlink" title="创建自定义解析器"></a>创建自定义解析器</h1></li>
+</ul>
+<ol>
+<li>打开解析器界面，选择intepreter<br><img src="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/zeppelin/Screenshot%202019-09-25%20at%2017.18.50.png" alt="img"></li>
+<li>点击create按钮<br><img src="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/zeppelin/Screenshot%202019-09-25%20at%2017.20.20.png" alt="img"></li>
+<li>填写下interpretername，这里设置你想要的</li>
+<li>选择interpreter group为jdbc</li>
+<li><p>这时会切换到对应jdbc的属性，调整如下参数</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">default.driver=	com.mysql.jdbc.Driver</span><br><span class="line">default.url=jdbc:mysql://localhost:3306/test</span><br><span class="line">default.user=root</span><br><span class="line">default.password=123456</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加dependency，导入依赖库</p>
+</li>
+</ol>
 
       
     </div>
@@ -409,9 +423,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/network/" rel="tag"># network</a>
+            <a href="/tags/mysql/" rel="tag"># mysql</a>
           
-            <a href="/tags/macos/" rel="tag"># macos</a>
+            <a href="/tags/zeppelin/" rel="tag"># zeppelin</a>
           
         </div>
       
@@ -424,8 +438,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/post/acc48d4f.html" rel="next" title="intellij使用docker调试进阶">
-                <i class="fa fa-chevron-left"></i> intellij使用docker调试进阶
+              <a href="/post/26d409bb.html" rel="next" title="zeepelin系列2-基本使用">
+                <i class="fa fa-chevron-left"></i> zeepelin系列2-基本使用
               </a>
             
           </div>
@@ -433,10 +447,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/post/ccb2bb28.html" rel="prev" title="backtrader_intro">
-                backtrader_intro <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -480,8 +490,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -657,6 +676,23 @@
         </div>
       </div>
 
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#导入依赖库"><span class="nav-number">1.</span> <span class="nav-text">导入依赖库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#创建自定义解析器"><span class="nav-number">2.</span> <span class="nav-text">创建自定义解析器</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
       
 
       
