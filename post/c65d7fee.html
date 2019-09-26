@@ -98,13 +98,21 @@
 
 
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Roger&#39;s Note">
-<meta property="og:url" content="https://rogersnowing.cn/tags/mac/index.html">
+  <meta name="description" content="intellij下使用spark提交到集群进行调试">
+<meta name="keywords" content="spark,intellij,debug">
+<meta property="og:type" content="article">
+<meta property="og:title" content="intellij下spark提交集群调试">
+<meta property="og:url" content="https://rogersnowing.cn/post/c65d7fee.html">
 <meta property="og:site_name" content="Roger&#39;s Note">
+<meta property="og:description" content="intellij下使用spark提交到集群进行调试">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/intellij/spark/Screenshot%202019-09-26%20at%2014.59.50.png">
+<meta property="og:image" content="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/intellij/spark/Screenshot%202019-09-26%20at%2015.01.24.png">
+<meta property="og:updated_time" content="2019-09-26T07:08:19.602Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Roger&#39;s Note">
+<meta name="twitter:title" content="intellij下spark提交集群调试">
+<meta name="twitter:description" content="intellij下使用spark提交到集群进行调试">
+<meta name="twitter:image" content="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/intellij/spark/Screenshot%202019-09-26%20at%2014.59.50.png">
 
 
 
@@ -112,7 +120,7 @@
 
   
   
-  <link rel="canonical" href="https://rogersnowing.cn/tags/mac/">
+  <link rel="canonical" href="https://rogersnowing.cn/post/c65d7fee">
 
 
 
@@ -122,7 +130,7 @@
   };
 </script>
 
-  <title>标签: mac | Roger's Note</title>
+  <title>intellij下spark提交集群调试 | Roger's Note</title>
   
 
 
@@ -170,7 +178,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -251,19 +259,6 @@
   
     
 
-    
-    
-      
-      
-    
-      
-      
-    
-    
-
-  
-
-
   
 
   
@@ -288,57 +283,204 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block tag">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>mac<small>标签</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
+
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://rogersnowing.cn/post/c65d7fee.html">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Roger Luo (Luo Dingjia)">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Roger's Note">
+    </span>
+
+    
+      <header class="post-header">
+
         
-          <a class="post-title-link" href="/post/9c65a60.html" itemprop="url">
-            
-              <span itemprop="name">mac下端口号检查</span>
-            
-          </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">intellij下spark提交集群调试
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-08-29T15:17:56+08:00" content="2019-08-29">
-          08-29
-        </time>
-      </div>
+              
+            
+          </h1>
+        
 
-    </header>
-  </article>
+        <div class="post-meta">
+          <span class="post-time">
 
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-26 14:51:08 / 修改时间：15:08:19" itemprop="dateCreated datePublished" datetime="2019-09-26T14:51:08+08:00">2019-09-26</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>intellij下使用spark提交到集群进行调试<br><a id="more"></a></p>
+<h1 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h1><ul>
+<li>搭建spark集群，本例子使用standalone</li>
+<li>已经根据之前的文档<a href="https://www.rogersnowing.cn/post/b4005e93.html" target="_blank" rel="noopener">intellij下spark程序本地调试</a>创建测试项目，或者自己已有的测试项目<h1 id="编译打包"><a href="#编译打包" class="headerlink" title="编译打包"></a>编译打包</h1>因为提交集群，需要生成对应jar包，这里需要设置intellij idea能在编译生成对应jar，方便后面指定这个jar地址</li>
+</ul>
+<ol>
+<li>打开项目project structure</li>
+<li>在project setttins/artifacts/下新加jar/from modules with depenecies<br><img src="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/intellij/spark/Screenshot%202019-09-26%20at%2014.59.50.png" alt="img"></li>
+<li>指定好对应的main函数，其他配置按照缺省<br><img src="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/it/intellij/spark/Screenshot%202019-09-26%20at%2015.01.24.png" alt="img"></li>
+<li>点击保存</li>
+<li>点击build/build artifacts/，在弹框下选择build，生成对应的jar包</li>
+</ol>
+<h1 id="配置方法"><a href="#配置方法" class="headerlink" title="配置方法"></a>配置方法</h1><p>一种最直接的方法是直接在代码里指定SparkConf的中master跟添加jar包，将<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> conf = <span class="keyword">new</span> <span class="type">SparkConf</span>().setMaster(<span class="string">"local"</span>).setAppName(<span class="string">"My SparkPi"</span>)</span><br></pre></td></tr></table></figure></p>
+<p>修改如下<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> conf = <span class="keyword">new</span> <span class="type">SparkConf</span>().setMaster(<span class="string">"spark://localhost:7077"</span>).setAppName(<span class="string">"My SparkPi"</span>).setJars(<span class="type">List</span>(<span class="string">"/Users/roger/Documents/code/mysparkpi/out/artifacts/mysparkpi_jar/mysparkpi.jar"</span>))</span><br></pre></td></tr></table></figure></p>
+<p>这里setJars路径设置成对应的jar路径</p>
+<p>运行，完成！调试，ok！</p>
+<p>但是上述方法有点问题就是后面的jar包带有本地方信息，跟集群可能是测试集群，另一种方式是通过命令行参数来指定</p>
+<ol>
+<li>先将SparkConf的代码修改成如下：<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> conf = <span class="keyword">new</span> <span class="type">SparkConf</span>().setAppName(<span class="string">"My SparkPi"</span>)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>这里没有指定master跟jars路径</p>
+<ol start="2">
+<li>通过打开configuartion，在vm options下指定如下内容<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-Dspark.master=spark://localhost:7077 -Dspark.jars=/Users/roger/Documents/code/mysparkpi/out/artifacts/mysparkpi_jar/mysparkpi.jar</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>运行，完成！调试，ok！</p>
 
       
     </div>
 
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/spark/" rel="tag"># spark</a>
+          
+            <a href="/tags/intellij/" rel="tag"># intellij</a>
+          
+            <a href="/tags/debug/" rel="tag"># debug</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/b4005e93.html" rel="next" title="intellij下spark程序本地调试">
+                <i class="fa fa-chevron-left"></i> intellij下spark程序本地调试
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+  </div>
 
 
           </div>
           
+
+  
+
+
 
         </div>
         
@@ -358,8 +500,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -540,6 +691,23 @@
       </div>
 
       
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#环境准备"><span class="nav-number">1.</span> <span class="nav-text">环境准备</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编译打包"><span class="nav-number">2.</span> <span class="nav-text">编译打包</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置方法"><span class="nav-number">3.</span> <span class="nav-text">配置方法</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
 
       
 
@@ -687,6 +855,10 @@
 
 
   
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
 
   
 
@@ -702,6 +874,8 @@
 
   
 
+
+  
 
 
   
