@@ -98,18 +98,18 @@
 
 
 
-  <meta name="description" content="单词拆分">
-<meta name="keywords" content="leetcode,bfs,medium,algorithm">
+  <meta name="description" content="用于linux通用备份脚本">
+<meta name="keywords" content="linux,devops">
 <meta property="og:type" content="article">
-<meta property="og:title" content="LeetCode-139-Word-Break">
-<meta property="og:url" content="https://rogersnowing.cn/post/68f7f501.html">
+<meta property="og:title" content="Linux通用备份脚本">
+<meta property="og:url" content="https://rogersnowing.cn/post/27506f81.html">
 <meta property="og:site_name" content="Roger&#39;s Note">
-<meta property="og:description" content="单词拆分">
+<meta property="og:description" content="用于linux通用备份脚本">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-06-03T06:42:32.714Z">
+<meta property="og:updated_time" content="2019-10-10T06:26:24.338Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="LeetCode-139-Word-Break">
-<meta name="twitter:description" content="单词拆分">
+<meta name="twitter:title" content="Linux通用备份脚本">
+<meta name="twitter:description" content="用于linux通用备份脚本">
 
 
 
@@ -117,7 +117,7 @@
 
   
   
-  <link rel="canonical" href="https://rogersnowing.cn/post/68f7f501">
+  <link rel="canonical" href="https://rogersnowing.cn/post/27506f81">
 
 
 
@@ -127,7 +127,7 @@
   };
 </script>
 
-  <title>LeetCode-139-Word-Break | Roger's Note</title>
+  <title>Linux通用备份脚本 | Roger's Note</title>
   
 
 
@@ -296,7 +296,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://rogersnowing.cn/post/68f7f501.html">
+    <link itemprop="mainEntityOfPage" href="https://rogersnowing.cn/post/27506f81.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Roger Luo (Luo Dingjia)">
@@ -313,7 +313,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">LeetCode-139-Word-Break
+          <h1 class="post-title" itemprop="name headline">Linux通用备份脚本
 
               
             
@@ -339,46 +339,16 @@
                 
               
 
-              <time title="创建时间：2019-03-25 00:27:35" itemprop="dateCreated datePublished" datetime="2019-03-25T00:27:35+08:00">2019-03-25</time>
+              <time title="创建时间：2019-10-10 14:16:56 / 修改时间：14:26:24" itemprop="dateCreated datePublished" datetime="2019-10-10T14:16:56+08:00">2019-10-10</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-06-03 14:42:32" itemprop="dateModified" datetime="2019-06-03T14:42:32+08:00">2019-06-03</time>
               
             
           </span>
 
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/algorithm/" itemprop="url" rel="index"><span itemprop="name">algorithm</span></a></span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -408,29 +378,13 @@
       
 
       
-        <p>单词拆分<br><a id="more"></a></p>
-<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>Given a non-empty string s and a dictionary wordDict containing a list of non-empty words, determine if s can be segmented into a space-separated sequence of one or more dictionary words.</p>
-<p>Note:</p>
-<ul>
-<li>The same word in the dictionary may be reused multiple times in the segmentation.</li>
-<li>You may assume the dictionary does not contain duplicate words.</li>
-</ul>
-<p><strong>Example 1:</strong></p>
-<p>Input: s = “leetcode”, wordDict = [“leet”, “code”]<br>Output: true<br>Explanation: Return true because “leetcode” can be segmented as “leet code”.</p>
-<p><strong>Example 2:</strong></p>
-<p>Input: s = “applepenapple”, wordDict = [“apple”, “pen”]<br>Output: true<br>Explanation: Return true because “applepenapple” can be segmented as “apple pen apple”.<br>             Note that you are allowed to reuse a dictionary word.</p>
-<p><strong>Example 3:</strong></p>
-<p>Input: s = “catsandog”, wordDict = [“cats”, “dog”, “sand”, “and”, “cat”]<br>Output: false</p>
-<h1 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h1><h2 id="采用动态规划（DP）"><a href="#采用动态规划（DP）" class="headerlink" title="采用动态规划（DP）"></a>采用动态规划（DP）</h2><ul>
-<li>使用dp动态规划来处理，将问题拆分有关联的子问题</li>
-<li>例如dp[i]表示s[:i]是否可以被分词且都在字典数组中</li>
-<li>在 dp[j] == 1, j&gt;=0, j&lt;i 的情况下，只要满足s[j:i]出现在字典数组中，则 dp[i] = 1 是成立的</li>
-<li>所以需要处理下第一个边界，后面就可以用上述公式来推算出来</li>
-</ul>
-<blockquote>
-<p>Runtime: 3 ms, faster than 97.51% of Java online submissions for Word Break.<br>Memory Usage: 36.8 MB, less than 69.21% of Java online submissions for Word Break.</p>
-</blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">wordBreak</span><span class="params">(String s, List&lt;String&gt; wordDict)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">boolean</span>[] dp = <span class="keyword">new</span> <span class="keyword">boolean</span>[s.length()];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; s.length(); ++i) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; wordDict.size(); ++j) &#123;</span><br><span class="line">                String w = wordDict.get(j);</span><br><span class="line">                <span class="keyword">int</span> l = w.length();</span><br><span class="line">                <span class="keyword">if</span> (</span><br><span class="line">                    i + <span class="number">1</span> &gt;= l &amp;&amp; s.substring(i+<span class="number">1</span>-l, i+<span class="number">1</span>).equals(w) &amp;&amp; (i+<span class="number">1</span>-l ==<span class="number">0</span> || dp[i - l] == <span class="keyword">true</span> ) <span class="comment">// fix the first time</span></span><br><span class="line">                ) &#123;</span><br><span class="line">                    dp[i] = <span class="keyword">true</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> dp[s.length() - <span class="number">1</span>] == <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <p>用于linux通用备份脚本<br><a id="more"></a><br>脚本使用方式注意事项</p>
+<ol>
+<li><code>SourceDir</code>是需要备份的根目录</li>
+<li>设置一个备份列表，名为<code>backup.txt</code>里面按行写着需要备份目录<code>SourceDir</code>下的哪些文件夹或者文件，是相对地址，例如<code>$SourceDir</code>下的<code>conf</code>文件夹就直接写一行<code>conf</code></li>
+<li>备份程序根据<code>backup.txt</code>来挨个备份且创建指定压缩包</li>
+<li>不支持一个文件夹下指定不同文件打包到同一个压缩包<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment">#author:        Roger</span></span><br><span class="line"><span class="comment">#date:          2019-10-10</span></span><br><span class="line"><span class="comment">#作用:           定期备份文件</span></span><br><span class="line"><span class="comment">#website:       https://rogersnowing.cn</span></span><br><span class="line"><span class="comment">##################################################</span></span><br><span class="line"><span class="comment"># 重要变量名      作用</span></span><br><span class="line"><span class="comment"># SourceDir    需要备份的目录</span></span><br><span class="line"><span class="comment"># LogFile      日志文件</span></span><br><span class="line"><span class="comment"># BakDir1      备份上层目录</span></span><br><span class="line"><span class="comment"># BakDir2      备份目录</span></span><br><span class="line"><span class="comment"># RetainDay    备份档案文件保留天数</span></span><br><span class="line"><span class="comment"># ProjectTxt   备份项目文件配置文件</span></span><br><span class="line"><span class="comment">##############★ 以下信息需要配置 ★##################</span></span><br><span class="line">DATE=`date +<span class="string">"%Y-%m-%d"</span>`</span><br><span class="line">SourceDir=/Users/roger/bigdata/zeppelin-0.8.1-bin-all</span><br><span class="line">BakDir1=/Users/roger/bigdata/data/zeppelin-bakup</span><br><span class="line">BakDir2=<span class="variable">$BakDir1</span>/`date +<span class="string">"%Y-%m-%d"</span>`</span><br><span class="line">LogFile=<span class="variable">$BakDir1</span>/log_`date +<span class="string">"%Y-%m-%d"</span>`.<span class="built_in">log</span></span><br><span class="line">RetainDay=20</span><br><span class="line">ProjectTxt=<span class="variable">$BakDir1</span>/backup.txt</span><br><span class="line"><span class="comment">##############★   创建备份目录   ★##################</span></span><br><span class="line">mkdir -p <span class="variable">$BakDir2</span>/</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"backup start at <span class="variable">$(date +"%Y-%m-%d %H:%M:%S")</span>"</span> &gt; <span class="variable">$LogFile</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"--------------------------------------------------"</span> &gt;&gt; <span class="variable">$LogFile</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">" "</span> &gt;&gt; <span class="variable">$LogFile</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"创建备份目录【<span class="variable">$BakDir2</span>】成功"</span> &gt;&gt; <span class="variable">$LogFile</span></span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$BakDir2</span></span><br><span class="line"><span class="comment">##############★   备份核心代码   ★##################</span></span><br><span class="line">ProjectList=`cat <span class="variable">$ProjectTxt</span>`</span><br><span class="line"><span class="keyword">for</span> Project <span class="keyword">in</span> <span class="variable">$ProjectList</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line"> ProjectData=<span class="variable">$SourceDir</span>/<span class="variable">$Project</span></span><br><span class="line"> DestDir=<span class="variable">$BakDir2</span>/<span class="variable">$Project</span></span><br><span class="line"> PackFile=<span class="variable">$Project</span>-<span class="variable">$DATE</span>.tar.gz</span><br><span class="line">  </span><br><span class="line"> <span class="keyword">if</span> [ -f <span class="variable">$BakDir2</span>/<span class="variable">$PackFile</span> ]</span><br><span class="line"> <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">"backup file have exist !"</span> &gt;&gt;<span class="variable">$LogFile</span></span><br><span class="line"> <span class="keyword">else</span></span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$SourceDir</span></span><br><span class="line">  tar -zcvf <span class="variable">$BakDir2</span>/<span class="variable">$PackFile</span> <span class="variable">$Project</span> &gt; /dev/null</span><br><span class="line">  <span class="built_in">echo</span> <span class="string">"目录或文件 <span class="variable">$SourceDir</span>/<span class="variable">$Project</span>已经备份到 <span class="variable">$BakDir2</span>/<span class="variable">$PackFile</span> "</span>&gt;&gt;<span class="variable">$LogFile</span></span><br><span class="line"> <span class="keyword">fi</span></span><br><span class="line"><span class="comment">##############★   删除$RetainDay天前的备份   ★##############</span></span><br><span class="line"><span class="keyword">if</span> [ <span class="string">"<span class="variable">$(uname)</span>"</span> == <span class="string">"Linux"</span> ] </span><br><span class="line"><span class="keyword">then</span></span><br><span class="line"> OldFile=<span class="string">"<span class="variable">$BakDir1</span>/"</span>$(date --date=<span class="string">"<span class="variable">$RetainDay</span> days ago"</span> +<span class="string">"%Y-%m-%d"</span>)</span><br><span class="line"><span class="keyword">else</span> <span class="comment"># 针对mac</span></span><br><span class="line"> OldFile=<span class="string">"<span class="variable">$BakDir1</span>/"</span>$(date -v-<span class="variable">$&#123;RetainDay&#125;</span>d +<span class="string">"%Y-%m-%d"</span>)</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"> <span class="keyword">if</span> [ -f <span class="variable">$OldFile</span> ]</span><br><span class="line"> <span class="keyword">then</span></span><br><span class="line">  rm -rf <span class="variable">$OldFile</span> &gt; /dev/null</span><br><span class="line">  <span class="built_in">echo</span> <span class="string">"[<span class="variable">$OldFile</span>],Delete Old File Success!"</span> &gt;&gt; <span class="variable">$LogFile</span></span><br><span class="line"> <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">" "</span> &gt;&gt; <span class="variable">$LogFile</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"--------------------------------------------------"</span> &gt;&gt; <span class="variable">$LogFile</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"backup end at <span class="variable">$(date +"%Y-%m-%d %H:%M:%S")</span>"</span> &gt;&gt; <span class="variable">$LogFile</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"                                                      ----------BY:Roger "</span> &gt;&gt; <span class="variable">$LogFile</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">" "</span> &gt;&gt; <span class="variable">$LogFile</span></span><br><span class="line"><span class="built_in">exit</span> 0</span><br></pre></td></tr></table></figure></li>
+</ol>
 
       
     </div>
@@ -487,13 +441,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/leetcode/" rel="tag"># leetcode</a>
+            <a href="/tags/linux/" rel="tag"># linux</a>
           
-            <a href="/tags/bfs/" rel="tag"># bfs</a>
-          
-            <a href="/tags/medium/" rel="tag"># medium</a>
-          
-            <a href="/tags/algorithm/" rel="tag"># algorithm</a>
+            <a href="/tags/devops/" rel="tag"># devops</a>
           
         </div>
       
@@ -506,8 +456,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/post/afcbc60d.html" rel="next" title="hexo博客搭建">
-                <i class="fa fa-chevron-left"></i> hexo博客搭建
+              <a href="/post/b194f68c.html" rel="next" title="zeppelin使用4-使用prefix">
+                <i class="fa fa-chevron-left"></i> zeppelin使用4-使用prefix
               </a>
             
           </div>
@@ -515,10 +465,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/post/2134f6db.html" rel="prev" title="LeetCode-140-Word-Break-II">
-                LeetCode-140-Word-Break-II <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -562,17 +508,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <div class="site-overview-wrap sidebar-panel">
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -754,23 +691,6 @@
         </div>
       </div>
 
-      
-      <!--noindex-->
-        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-            
-            
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Question"><span class="nav-number">1.</span> <span class="nav-text">Question</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Solution"><span class="nav-number">2.</span> <span class="nav-text">Solution</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#采用动态规划（DP）"><span class="nav-number">2.1.</span> <span class="nav-text">采用动态规划（DP）</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </div>
-      <!--/noindex-->
       
 
       
