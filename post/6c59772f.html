@@ -98,13 +98,18 @@
 
 
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Roger&#39;s Note">
-<meta property="og:url" content="https://rogersnowing.cn/tags/unixodbc/index.html">
+  <meta name="description" content="zeppelin跟git打通配置">
+<meta name="keywords" content="git,zeppelin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="zeppelin notebook同步到git远程仓库">
+<meta property="og:url" content="https://rogersnowing.cn/post/6c59772f.html">
 <meta property="og:site_name" content="Roger&#39;s Note">
+<meta property="og:description" content="zeppelin跟git打通配置">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-10T08:16:02.323Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Roger&#39;s Note">
+<meta name="twitter:title" content="zeppelin notebook同步到git远程仓库">
+<meta name="twitter:description" content="zeppelin跟git打通配置">
 
 
 
@@ -112,7 +117,7 @@
 
   
   
-  <link rel="canonical" href="https://rogersnowing.cn/tags/unixodbc/">
+  <link rel="canonical" href="https://rogersnowing.cn/post/6c59772f">
 
 
 
@@ -122,7 +127,7 @@
   };
 </script>
 
-  <title>标签: unixodbc | Roger's Note</title>
+  <title>zeppelin notebook同步到git远程仓库 | Roger's Note</title>
   
 
 
@@ -170,7 +175,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -251,19 +256,6 @@
   
     
 
-    
-    
-      
-      
-    
-      
-      
-    
-    
-
-  
-
-
   
 
   
@@ -288,57 +280,219 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block tag">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>unixodbc<small>标签</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
+
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://rogersnowing.cn/post/6c59772f.html">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Roger Luo (Luo Dingjia)">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Roger's Note">
+    </span>
+
+    
+      <header class="post-header">
+
         
-          <a class="post-title-link" href="/post/4f49a077.html" itemprop="url">
-            
-              <span itemprop="name">c++通过unxiodbc，freetds连接sqlserver数据库</span>
-            
-          </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">zeppelin notebook同步到git远程仓库
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-09-19T16:58:14+08:00" content="2019-09-19">
-          09-19
-        </time>
-      </div>
+              
+            
+          </h1>
+        
 
-    </header>
-  </article>
+        <div class="post-meta">
+          <span class="post-time">
 
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-10-10 15:08:10 / 修改时间：16:16:02" itemprop="dateCreated datePublished" datetime="2019-10-10T15:08:10+08:00">2019-10-10</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>zeppelin跟git打通配置<br><a id="more"></a><br>zeppelin默认会在本地安装目录创建<code>notebook</code>目录，里面存放配置作业本，采用git进行管理</p>
+<h2 id="联通zeppelin跟git远程仓库"><a href="#联通zeppelin跟git远程仓库" class="headerlink" title="联通zeppelin跟git远程仓库"></a>联通zeppelin跟git远程仓库</h2><ol>
+<li>创建git远程仓库路径，这里选择gitlab服务器，也可以选择github</li>
+<li>在zeppelin notebook下加入输入下命令<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin http://xxx.com/zeppelin/notebook.git</span><br><span class="line">git commit</span><br><span class="line">git push -u origin master</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="linux-git密码存储"><a href="#linux-git密码存储" class="headerlink" title="linux git密码存储"></a>linux git密码存储</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global credential.helper store</span><br></pre></td></tr></table></figure>
+<p>然后执行git相关命令，输入一次密码后，后面请求就不需要了。</p>
+<h2 id="自动提交"><a href="#自动提交" class="headerlink" title="自动提交"></a>自动提交</h2><p>上述方法需要手工提交，需要自动的话，需要创建<code>.git/hooks/post-commit</code>，并加入如下内容<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line">git push origin master</span><br></pre></td></tr></table></figure></p>
+<p>然后使用<code>chmod +x post-commit</code>文件即可</p>
+<h2 id="错误排查"><a href="#错误排查" class="headerlink" title="错误排查"></a>错误排查</h2><h3 id="commit报错"><a href="#commit报错" class="headerlink" title="commit报错"></a>commit报错</h3><p>提示<code>remote: GitLab: You are not allowed to push code to protected branches on this project.</code>，这里需要是gitlab的账号跟分支保护机制的问题，maste分支限制只有主程序员权限以上的才允许执行</p>
 
       
     </div>
 
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div>原创技术分享，您的支持将鼓励我继续创作</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechat.png" alt="Roger Luo (Luo Dingjia) 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.png" alt="Roger Luo (Luo Dingjia) 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/git/" rel="tag"># git</a>
+          
+            <a href="/tags/zeppelin/" rel="tag"># zeppelin</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/27506f81.html" rel="next" title="Linux通用备份脚本">
+                <i class="fa fa-chevron-left"></i> Linux通用备份脚本
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+  </div>
 
 
           </div>
           
+
+  
+
+
 
         </div>
         
@@ -358,8 +512,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -542,6 +705,23 @@
       </div>
 
       
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#联通zeppelin跟git远程仓库"><span class="nav-number">1.</span> <span class="nav-text">联通zeppelin跟git远程仓库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linux-git密码存储"><span class="nav-number">2.</span> <span class="nav-text">linux git密码存储</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自动提交"><span class="nav-number">3.</span> <span class="nav-text">自动提交</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#错误排查"><span class="nav-number">4.</span> <span class="nav-text">错误排查</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#commit报错"><span class="nav-number">4.1.</span> <span class="nav-text">commit报错</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
 
       
 
@@ -689,6 +869,10 @@
 
 
   
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
 
   
 
@@ -704,6 +888,8 @@
 
   
 
+
+  
 
 
   
