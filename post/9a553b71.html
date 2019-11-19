@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+  <meta name="google-site-verification" content="byhWoQUfSwWgh2OkIV9b7co8brBG6OLSZwm9ivUtuZ0">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.2" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="生产环境连接redis报错redis.clients.jedis.exceptions.JedisConnectionException: Unexpected end of stream">
+<meta name="keywords" content="redis,生产故障">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis错误 Unexpected end of stream">
+<meta property="og:url" content="https://rogersnowing.cn/post/9a553b71.html">
+<meta property="og:site_name" content="Roger&#39;s Note">
+<meta property="og:description" content="生产环境连接redis报错redis.clients.jedis.exceptions.JedisConnectionException: Unexpected end of stream">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-11-19T14:41:40.080Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Redis错误 Unexpected end of stream">
+<meta name="twitter:description" content="生产环境连接redis报错redis.clients.jedis.exceptions.JedisConnectionException: Unexpected end of stream">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://rogersnowing.cn/post/9a553b71">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Redis错误 Unexpected end of stream | Roger's Note</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Roger's Note</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Salvation lies within</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://rogersnowing.cn/post/9a553b71.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Roger Luo (Luo Dingjia)">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Roger's Note">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Redis错误 Unexpected end of stream
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-11-19 19:13:33 / 修改时间：22:41:40" itemprop="dateCreated datePublished" datetime="2019-11-19T19:13:33+08:00">2019-11-19</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>生产环境连接redis报错redis.clients.jedis.exceptions.JedisConnectionException: Unexpected end of stream<br><a id="more"></a></p>
+<h1 id="环境跟现象"><a href="#环境跟现象" class="headerlink" title="环境跟现象"></a>环境跟现象</h1><p>redis 配置了timeout 10分钟，生产环境出现<code>redis.clients.jedis.exceptions.JedisConnectionException: Unexpected end of stream</code>，这个错误是偶尔出现，通常出现在redis一段时间没有操作后出现的，后面经常访问，就没有出现</p>
+<h1 id="原因跟问题重现"><a href="#原因跟问题重现" class="headerlink" title="原因跟问题重现"></a>原因跟问题重现</h1><p>虽然使用了连接池，但是还是出现这个问题，是因为连接池里的跟redis连接出现</p>
+<p>Pool.java<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> T <span class="title">getResource</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> internalPool.borrowObject();</span><br><span class="line">  &#125; <span class="keyword">catch</span> (NoSuchElementException nse) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">null</span> == nse.getCause()) &#123; <span class="comment">// The exception was caused by an exhausted pool</span></span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> JedisExhaustedPoolException(</span><br><span class="line">          <span class="string">"Could not get a resource since the pool is exhausted"</span>, nse);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// Otherwise, the exception was caused by the implemented activateObject() or ValidateObject()</span></span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> JedisException(<span class="string">"Could not get a resource from the pool"</span>, nse);</span><br><span class="line">  &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> JedisConnectionException(<span class="string">"Could not get a resource from the pool"</span>, e);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>common-pools2的GenericObjectPool中的<code>borrowObject</code>方法，这里也透露了jedispool使用的是依赖于common-pools2，这里我们先看下这个方法的解析，来自官方解析，</p>
+<blockquote>
+<p>使用特定的等待时间从池中借用一个对象，该等待时间仅在BaseGenericObjectPool.getBlockWhenExhausted()为true时适用。</p>
+</blockquote>
+<blockquote>
+<p>如果池中有一个或多个空闲实例可用，则将基于BaseGenericObjectPool.getLifo()，激活并返回的值选择一个空闲实例。如果激活失败，或者testOnBorrow设置为true且验证失败，则实例将被销毁并检查下一个可用实例。这将继续进行，直到返回有效实例或不再有可用的空闲实例为止。</p>
+</blockquote>
+<blockquote>
+<p>如果池中没有可用的空闲实例，则行为取决于maxTotal（如果适用） BaseGenericObjectPool.getBlockWhenExhausted()和传递给borrowMaxWaitMillis参数的值 。如果从池中检出的实例数少于maxTotal,一个新实例的创建，激活和验证（如果适用），并返回给调用方。如果验证失败，NoSuchElementException 则抛出a。</p>
+</blockquote>
+<blockquote>
+<p>如果池已用尽（没有可用的空闲实例，也没有创建新实例的能力），则此方法将阻塞（如果 BaseGenericObjectPool.getBlockWhenExhausted()为true）或抛出 NoSuchElementException（如果 BaseGenericObjectPool.getBlockWhenExhausted()为false）。此方法BaseGenericObjectPool.getBlockWhenExhausted()为true 时将阻止的时间长度由传递给borrowMaxWaitMillis 参数的值确定。</p>
+</blockquote>
+<blockquote>
+<p>当池耗尽时，可能会同时阻止多个调用线程，以等待实例变为可用。已实现“公平”算法，以确保线程按请求到达顺序接收可用实例。</p>
+</blockquote>
+<p><a href="https://commons.apache.org/proper/commons-pool/apidocs/org/apache/commons/pool2/impl/GenericObjectPool.html#borrowObject-long-" target="_blank" rel="noopener">英文看这里</a>, 这里可以了解pool的获取实力的过程</p>
+<p>这里pool的获取实例的逻辑是这样的：</p>
+<ol>
+<li>先从空闲连接列表获取可用连接</li>
+<li>如果获取不了，就创建新的，如果创建不了就根据是否阻塞来获取连接</li>
+<li>拿到非空连接之后（注意这里连接不一定是好的，有可能server已经关闭，消息不对称），进行如下代码，这里是否使用判断就是需要加入条件getTestOnBorrow，这个是通过配置参数testonborrow来开启的<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 来自GenericObjectPool.java</span></span><br><span class="line"><span class="keyword">if</span> (p != <span class="keyword">null</span> &amp;&amp; getTestOnBorrow()) &#123;</span><br><span class="line">    <span class="keyword">boolean</span> validate = <span class="keyword">false</span>;</span><br><span class="line">    Throwable validationThrowable = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        validate = factory.validateObject(p); </span><br><span class="line">    &#125; <span class="keyword">catch</span> (<span class="keyword">final</span> Throwable t) &#123;</span><br><span class="line">        PoolUtils.checkRethrow(t);</span><br><span class="line">        validationThrowable = t;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (!validate) &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            destroy(p);</span><br><span class="line">            destroyedByBorrowValidationCount.incrementAndGet();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (<span class="keyword">final</span> Exception e) &#123;</span><br><span class="line">            <span class="comment">// Ignore - validation failure is more important</span></span><br><span class="line">        &#125;</span><br><span class="line">        p = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">if</span> (create) &#123;</span><br><span class="line">            <span class="keyword">final</span> NoSuchElementException nsee = <span class="keyword">new</span> NoSuchElementException(</span><br><span class="line">                    <span class="string">"Unable to validate object"</span>);</span><br><span class="line">            nsee.initCause(validationThrowable);</span><br><span class="line">            <span class="keyword">throw</span> nsee;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>这里使用到factory.validateObject(p)的具体实现如下<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 来自jedisfactory.java</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">validateObject</span><span class="params">(PooledObject&lt;Jedis&gt; pooledJedis)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> BinaryJedis jedis = pooledJedis.getObject();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      HostAndPort hostAndPort = <span class="keyword">this</span>.hostAndPort.get();</span><br><span class="line"></span><br><span class="line">      String connectionHost = jedis.getClient().getHost();</span><br><span class="line">      <span class="keyword">int</span> connectionPort = jedis.getClient().getPort();</span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> hostAndPort.getHost().equals(connectionHost)</span><br><span class="line">          &amp;&amp; hostAndPort.getPort() == connectionPort &amp;&amp; jedis.isConnected()</span><br><span class="line">          &amp;&amp; jedis.ping().equals(<span class="string">"PONG"</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (<span class="keyword">final</span> Exception e) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里拆包从poolobject获取jedis对象，然后对比host以及port来判断是否同一个redisserver，然后还发送一个ping命令，这里就是关键了，如果jedis连接已经被server掐断了，就收不到pong的返回，从而返回false，这里也说明，每次获取jedis连接，都会发送一个ping命令。</p>
+<p>如果校验是false，就进入到destroy方法，这里的操作就是common-pool2一套操作了，就是清理环境（包含空闲列表， 全局列表，计数器更新），destory之后，就会进入循环，重新之前的步骤，这样继续从空闲列表获取第一个连接，然后重新判断，如果他是好的，就返回，如果不好，继续操作，到后面空闲列表为空，就执行如下代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">create = <span class="keyword">false</span>;</span><br><span class="line">p = idleObjects.pollFirst();</span><br><span class="line"><span class="keyword">if</span> (p == <span class="keyword">null</span>) &#123;</span><br><span class="line">    p = create();</span><br><span class="line">    <span class="keyword">if</span> (p != <span class="keyword">null</span>) &#123;</span><br><span class="line">        create = <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这个create变量就是用来控制是否要下文校验失败判断是否抛异常，也是用来跳出循环使用。</p>
+<p><strong>结论：</strong> 设置testonborrow=true可以保证业务获取到的jedis连接是可用的（排除pool满了或者redis服务死了的情况），这样业务不感知或者需要加重试代码。但是这个需要带来开销的，每次获取连接都需要ping命令发送来探测连接可用性。</p>
+<h1 id="延伸：-testonreturn"><a href="#延伸：-testonreturn" class="headerlink" title="延伸： testonreturn"></a>延伸： testonreturn</h1><p>testonreturn是什么，这个设置用在returnobject也就是使用jedis实例的close方法时，最终会调用returnObject方法，这里截取部分代码来看下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// genericobjectpool.java</span></span><br><span class="line"><span class="keyword">if</span> (getTestOnReturn() &amp;&amp; !factory.validateObject(p)) &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        destroy(p);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (<span class="keyword">final</span> Exception e) &#123;</span><br><span class="line">        swallowException(e);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        ensureIdle(<span class="number">1</span>, <span class="keyword">false</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (<span class="keyword">final</span> Exception e) &#123;</span><br><span class="line">        swallowException(e);</span><br><span class="line">    &#125;</span><br><span class="line">    updateStatsReturn(activeTime);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里看到如果设置true之后，会执行validateObject函数，这个也就是刚才testonborrow也说到的函数，这里如果校验失败，也会执行destroy方法，也就是做之前说的相同动作。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div>原创技术分享，您的支持将鼓励我继续创作</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechat.png" alt="Roger Luo (Luo Dingjia) 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.png" alt="Roger Luo (Luo Dingjia) 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/redis/" rel="tag"># redis</a>
+          
+            <a href="/tags/生产故障/" rel="tag"># 生产故障</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/2e39eeef.html" rel="next" title="sql-window-function-desc">
+                <i class="fa fa-chevron-left"></i> sql-window-function-desc
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Roger Luo (Luo Dingjia)</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">47</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">57</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#环境跟现象"><span class="nav-number">1.</span> <span class="nav-text">环境跟现象</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#原因跟问题重现"><span class="nav-number">2.</span> <span class="nav-text">原因跟问题重现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#延伸：-testonreturn"><span class="nav-number">3.</span> <span class="nav-text">延伸： testonreturn</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Roger Luo (Luo Dingjia)</span>
+
+  
+
+  
+</div>
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="site-uv" title="总访客量">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="site-pv" title="总访问量">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+    <span class="post-meta-divider">|</span>
+
+
+
+
+  <script src="https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js"></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize("");
+    }
+  </script>
+
+
+
+<div class="BbeiAn-info"">
+  <a href="http://www.miitbeian.gov.cn">粤ICP备17113681号-1</a>
+  
+</div>
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.2"></script>
+
+  <script src="/js/motion.js?v=7.1.2"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.2"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+<script>
+if ($('body').find('pre.mermaid').length) {
+  $.ajax({
+    type: 'GET',
+    url: '',
+    dataType: 'script',
+    cache: true,
+    success: function() {
+      mermaid.initialize({
+        theme: '',
+        logLevel: 3,
+        flowchart: { curve: 'linear' },
+        gantt: { axisFormat: '%m/%d/%Y' },
+        sequence: { actorMargin: 50 }
+      });
+    }
+  });
+}
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
