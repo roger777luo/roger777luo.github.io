@@ -99,14 +99,14 @@
 
 
   <meta name="description" content="生产环境连接redis报错redis.clients.jedis.exceptions.JedisConnectionException: Unexpected end of stream">
-<meta name="keywords" content="redis,生产故障">
+<meta name="keywords" content="java,redis,生产故障,jedis">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Redis错误 Unexpected end of stream">
 <meta property="og:url" content="https://rogersnowing.cn/post/9a553b71.html">
 <meta property="og:site_name" content="Roger&#39;s Note">
 <meta property="og:description" content="生产环境连接redis报错redis.clients.jedis.exceptions.JedisConnectionException: Unexpected end of stream">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-11-19T14:46:28.263Z">
+<meta property="og:updated_time" content="2019-11-19T15:12:25.709Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis错误 Unexpected end of stream">
 <meta name="twitter:description" content="生产环境连接redis报错redis.clients.jedis.exceptions.JedisConnectionException: Unexpected end of stream">
@@ -339,7 +339,7 @@
                 
               
 
-              <time title="创建时间：2019-11-19 19:13:33 / 修改时间：22:46:28" itemprop="dateCreated datePublished" datetime="2019-11-19T19:13:33+08:00">2019-11-19</time>
+              <time title="创建时间：2019-11-19 19:13:33 / 修改时间：23:12:25" itemprop="dateCreated datePublished" datetime="2019-11-19T19:13:33+08:00">2019-11-19</time>
             
 
             
@@ -412,6 +412,8 @@
 <p><strong>结论：</strong> 设置testonborrow=true可以保证业务获取到的jedis连接是可用的（排除pool满了或者redis服务死了的情况），这样业务不感知或者需要加重试代码。但是这个需要带来开销的，每次获取连接都需要ping命令发送来探测连接可用性。</p>
 <h1 id="延伸：-testonreturn"><a href="#延伸：-testonreturn" class="headerlink" title="延伸： testonreturn"></a>延伸： testonreturn</h1><p>testonreturn是什么，这个设置用在returnobject也就是使用jedis实例的close方法时，最终会调用returnObject方法，这里截取部分代码来看下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// genericobjectpool.java</span></span><br><span class="line"><span class="keyword">if</span> (getTestOnReturn() &amp;&amp; !factory.validateObject(p)) &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        destroy(p);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (<span class="keyword">final</span> Exception e) &#123;</span><br><span class="line">        swallowException(e);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        ensureIdle(<span class="number">1</span>, <span class="keyword">false</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (<span class="keyword">final</span> Exception e) &#123;</span><br><span class="line">        swallowException(e);</span><br><span class="line">    &#125;</span><br><span class="line">    updateStatsReturn(activeTime);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>这里看到如果设置true之后，会执行validateObject函数，这个也就是刚才testonborrow也说到的函数，这里如果校验失败，也会执行destroy方法，也就是做之前说的相同动作。</p>
+<h1 id="延伸：-common-pool2"><a href="#延伸：-common-pool2" class="headerlink" title="延伸： common-pool2"></a>延伸： common-pool2</h1><p>其实jedis使用的池是通过集成apache common-pool2来实现的，其实刚才说的很多方法都是common-pool2来要求实现的</p>
+<p>大家有兴趣可以阅读下 common-pool2 的实现细节 一文来加深理解。</p>
 
       
     </div>
@@ -468,9 +470,13 @@
       
         <div class="post-tags">
           
+            <a href="/tags/java/" rel="tag"># java</a>
+          
             <a href="/tags/redis/" rel="tag"># redis</a>
           
             <a href="/tags/生产故障/" rel="tag"># 生产故障</a>
+          
+            <a href="/tags/jedis/" rel="tag"># jedis</a>
           
         </div>
       
@@ -492,6 +498,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/post/7c0fe977.html" rel="prev" title="common-pool2-detail">
+                common-pool2-detail <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -560,7 +570,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">47</span>
+                    <span class="site-state-item-count">49</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -714,7 +724,13 @@
                     
                       
                     
-                    <span class="site-state-item-count">57</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">60</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -752,7 +768,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#环境跟现象"><span class="nav-number">1.</span> <span class="nav-text">环境跟现象</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#原因跟问题重现"><span class="nav-number">2.</span> <span class="nav-text">原因跟问题重现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#延伸：-testonreturn"><span class="nav-number">3.</span> <span class="nav-text">延伸： testonreturn</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#环境跟现象"><span class="nav-number">1.</span> <span class="nav-text">环境跟现象</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#原因跟问题重现"><span class="nav-number">2.</span> <span class="nav-text">原因跟问题重现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#延伸：-testonreturn"><span class="nav-number">3.</span> <span class="nav-text">延伸： testonreturn</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#延伸：-common-pool2"><span class="nav-number">4.</span> <span class="nav-text">延伸： common-pool2</span></a></li></ol></div>
             
 
           </div>
