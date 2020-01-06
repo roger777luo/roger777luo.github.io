@@ -292,6 +292,341 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://rogersnowing.cn/post/d48abf0a.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Roger Luo (Luo Dingjia)">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Roger's Note">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/post/d48abf0a.html" class="post-title-link" itemprop="url">flask+nginx+uwsgi+https搭建</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-01-06 09:58:20 / 修改时间：09:59:03" itemprop="dateCreated datePublished" datetime="2020-01-06T09:58:20+08:00">2020-01-06</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="三者关系"><a href="#三者关系" class="headerlink" title="三者关系"></a>三者关系</h2><ol>
+<li>nginx是web服务器</li>
+<li>flask是web框架</li>
+<li>wsgi只用于python的,连接web服务器与web框架</li>
+</ol>
+<h2 id="安装nginx"><a href="#安装nginx" class="headerlink" title="安装nginx"></a>安装nginx</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum install -y nginx</span><br><span class="line">systemctl enable nginx.service</span><br><span class="line">systemctl start nginx</span><br></pre></td></tr></table></figure>
+<p>nginx缺省使用80端口，这是可以访问127.0.0.1:80或者是云服务器的对外网址也能看到服务正常启动了</p>
+<h2 id="安装uwsgi"><a href="#安装uwsgi" class="headerlink" title="安装uwsgi"></a>安装uwsgi</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y uwsgi uwsgi-plugin-python</span><br></pre></td></tr></table></figure>
+<h2 id="安装virtualenv"><a href="#安装virtualenv" class="headerlink" title="安装virtualenv"></a>安装virtualenv</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install virtualenv</span><br></pre></td></tr></table></figure>
+<h2 id="配置Python虚拟环境"><a href="#配置Python虚拟环境" class="headerlink" title="配置Python虚拟环境"></a>配置Python虚拟环境</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p /data/website/myapp</span><br><span class="line">cd /data/website/myapp</span><br><span class="line">virtualenv env</span><br></pre></td></tr></table></figure>
+<h2 id="激活虚拟环境且安装flask"><a href="#激活虚拟环境且安装flask" class="headerlink" title="激活虚拟环境且安装flask"></a>激活虚拟环境且安装flask</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source env/bin/activate</span><br></pre></td></tr></table></figure>
+<p>这是会看到命令提示符出现env字眼，表示进入到<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install flask</span><br></pre></td></tr></table></figure></p>
+<h2 id="创建第一个flask程序"><a href="#创建第一个flask程序" class="headerlink" title="创建第一个flask程序"></a>创建第一个flask程序</h2><p>创建/data/website/myapp/run.py并修改如下内容<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line">app = Flask(__name__)</span><br><span class="line"><span class="meta">@app.route('/')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">"&lt;h1&gt;hello, myapp&lt;/h1&gt;"</span></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    app.run(host=<span class="string">"0.0.0.0"</span>,port=<span class="number">5000</span>,debug=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure></p>
+<p>使用python run.py执行，在浏览器输入127.0.0.1:5000会看到内容</p>
+<h2 id="配置uwsgi"><a href="#配置uwsgi" class="headerlink" title="配置uwsgi"></a>配置uwsgi</h2><p>创建/data/website/myapp/run.py并修改如下内容<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[uwsgi]</span><br><span class="line">socket = 127.0.0.1:5000</span><br><span class="line">pythonpath = /data/website/myapp</span><br><span class="line">module = run</span><br><span class="line">callable = app</span><br><span class="line">processes = 4</span><br><span class="line">threads = 2</span><br></pre></td></tr></table></figure></p>
+<p>执行uwsgi uwsgi.ini –plugin python 无误就按ctrl c杀掉进程</p>
+<p>解释说明下uwsgi的配置参数内容：</p>
+<ul>
+<li>socket：通讯端口，外界可以通过127.0.0.1:8001访问，相当于我们在本地运行flask，并通过127.0.0.1:5000访问；并负责与nginx通信。</li>
+<li>pythonpath：项目目录。</li>
+<li>module：启动文件的文件名，我们可以在本地用Python run.py启动flask项目。</li>
+<li>callable：程序内启用的application变量名。</li>
+<li>processes：处理器个数。</li>
+<li>threads：线程数。</li>
+</ul>
+<p>注意：最好不要在配置文件写中文注释，别问我为什么</p>
+<h2 id="配置nginx"><a href="#配置nginx" class="headerlink" title="配置nginx"></a>配置nginx</h2><p>不同版本不同的配置路劲，我的是修改/etc/nginx/nginx.conf<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line"># For more information on configuration, see:</span><br><span class="line">#   * Official English Documentation: http://nginx.org/en/docs/</span><br><span class="line">#   * Official Russian Documentation: http://nginx.org/ru/docs/</span><br><span class="line"></span><br><span class="line">user nginx;</span><br><span class="line">worker_processes auto;</span><br><span class="line">error_log /var/log/nginx/error.log;</span><br><span class="line">pid /run/nginx.pid;</span><br><span class="line"></span><br><span class="line"># Load dynamic modules. See /usr/share/nginx/README.dynamic.</span><br><span class="line">include /usr/share/nginx/modules/*.conf;</span><br><span class="line"></span><br><span class="line">events &#123;</span><br><span class="line">    worker_connections 1024;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">http &#123;</span><br><span class="line">    log_format  main  &apos;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &apos;</span><br><span class="line">                      &apos;$status $body_bytes_sent &quot;$http_referer&quot; &apos;</span><br><span class="line">                      &apos;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&apos;;</span><br><span class="line"></span><br><span class="line">    access_log  /var/log/nginx/access.log  main;</span><br><span class="line"></span><br><span class="line">    sendfile            on;</span><br><span class="line">    tcp_nopush          on;</span><br><span class="line">    tcp_nodelay         on;</span><br><span class="line">    keepalive_timeout   65;</span><br><span class="line">    types_hash_max_size 2048;</span><br><span class="line"></span><br><span class="line">    include             /etc/nginx/mime.types;</span><br><span class="line">    default_type        application/octet-stream;</span><br><span class="line"></span><br><span class="line">    # Load modular configuration files from the /etc/nginx/conf.d directory.</span><br><span class="line">    # See http://nginx.org/en/docs/ngx_core_module.html#include</span><br><span class="line">    # for more information.</span><br><span class="line">    include /etc/nginx/conf.d/*.conf;</span><br><span class="line"></span><br><span class="line">    server &#123;</span><br><span class="line">        listen       80 default_server;</span><br><span class="line">        listen       [::]:80 default_server;</span><br><span class="line">        server_name  _;</span><br><span class="line">        root         /usr/share/nginx/html;</span><br><span class="line"></span><br><span class="line">        # Load configuration files for the default server block.</span><br><span class="line">        include /etc/nginx/default.d/*.conf;</span><br><span class="line"></span><br><span class="line">        location / &#123;</span><br><span class="line">                include        uwsgi_params;</span><br><span class="line">                uwsgi_pass     127.0.0.1:5000;</span><br><span class="line">                uwsgi_param UWSGI_PYHOME /data/website/myapp/env;</span><br><span class="line">                uwsgi_param UWSGI_CHDIR /data/website/myapp;</span><br><span class="line">                uwsgi_param UWSGI_SCRIPT run:app;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        error_page 404 /404.html;</span><br><span class="line">            location = /40x.html &#123;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        error_page 500 502 503 504 /50x.html;</span><br><span class="line">            location = /50x.html &#123;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"># Settings for a TLS enabled server.</span><br><span class="line">#</span><br><span class="line">#    server &#123;</span><br><span class="line">#        listen       443 ssl http2 default_server;</span><br><span class="line">#        listen       [::]:443 ssl http2 default_server;</span><br><span class="line">#        server_name  _;</span><br><span class="line">#        root         /usr/share/nginx/html;</span><br><span class="line">#</span><br><span class="line">#        ssl_certificate &quot;/etc/pki/nginx/server.crt&quot;;</span><br><span class="line">#        ssl_certificate_key &quot;/etc/pki/nginx/private/server.key&quot;;</span><br><span class="line">#        ssl_session_cache shared:SSL:1m;</span><br><span class="line">#        ssl_session_timeout  10m;</span><br><span class="line">#        ssl_ciphers HIGH:!aNULL:!MD5;</span><br><span class="line">#        ssl_prefer_server_ciphers on;</span><br><span class="line">#</span><br><span class="line">#        # Load configuration files for the default server block.</span><br><span class="line">#        include /etc/nginx/default.d/*.conf;</span><br><span class="line">#</span><br><span class="line">#        location / &#123;</span><br><span class="line">#        &#125;</span><br><span class="line">#</span><br><span class="line">#        error_page 404 /404.html;</span><br><span class="line">#            location = /40x.html &#123;</span><br><span class="line">#        &#125;</span><br><span class="line">#</span><br><span class="line">#        error_page 500 502 503 504 /50x.html;</span><br><span class="line">#            location = /50x.html &#123;</span><br><span class="line">#        &#125;</span><br><span class="line">#    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>修改部分就是http/server/location部分</p>
+<p>重启nginx服务<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart nginx</span><br></pre></td></tr></table></figure></p>
+<h2 id="启动uwsgi"><a href="#启动uwsgi" class="headerlink" title="启动uwsgi"></a>启动uwsgi</h2><p>使用后台常驻运行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /data/website/myapp</span><br><span class="line">nohup uwsgi uwsgi.ini --plugin python &amp;</span><br></pre></td></tr></table></figure></p>
+<h2 id="完成"><a href="#完成" class="headerlink" title="完成"></a>完成</h2><p>通过浏览器输出你的域名或者你的serverip来获取之前在127.0.0.1:5000的页面</p>
+<h2 id="进阶配置https"><a href="#进阶配置https" class="headerlink" title="进阶配置https"></a>进阶配置https</h2><h3 id="生成https证书"><a href="#生成https证书" class="headerlink" title="生成https证书"></a>生成https证书</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cd /etc/nginx/</span><br><span class="line">mkdir crt</span><br><span class="line">cd crt</span><br><span class="line">openssl genrsa -out server.key 1024 # 生成密钥</span><br><span class="line">openssl req -new -key server.key -out server.csr # 生成证书请求</span><br><span class="line">openssl x509 -req -in server.csr -signkey server.key -out server.crt # 使用之前的私钥来证书</span><br></pre></td></tr></table></figure>
+<h3 id="配置nginx开启https"><a href="#配置nginx开启https" class="headerlink" title="配置nginx开启https"></a>配置nginx开启https</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">        listen 443 ssl;</span><br><span class="line">        listen 80;</span><br><span class="line">        server_name testweb;</span><br><span class="line">        ssl_certificate /etc/nginx/crt/server.crt;</span><br><span class="line">        ssl_certificate_key /etc/nginx/crt/server.key;</span><br><span class="line">        ssl_protocols  TLSv1;</span><br><span class="line">        ssl_ciphers ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES128-SHA256:DHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES256-GCM-SHA384:AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256:AES256-SHA:AES128-SHA:DES-CBC3-SHA:HIGH:!aNULL:!eNULL:!EXPORT:!CAMELLIA:!DES:!MD5:!PSK:!RC4;</span><br><span class="line">        ssl_prefer_server_ciphers on;</span><br><span class="line">        ssl_session_timeout  5m;</span><br><span class="line">        charset utf-8;</span><br><span class="line">        proxy_set_header Host $host;</span><br><span class="line">        proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">        proxy_set_header REMOTE-HOST $remote_addr;</span><br><span class="line">        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">        client_max_body_size 50m;</span><br><span class="line">        client_body_buffer_size 256k;</span><br><span class="line">        proxy_connect_timeout 30;</span><br><span class="line">        proxy_send_timeout 30;</span><br><span class="line">        proxy_read_timeout 60;</span><br><span class="line">        proxy_buffer_size 256k;</span><br><span class="line">        proxy_buffers 4 256k;</span><br><span class="line">        proxy_busy_buffers_size 256k;</span><br><span class="line">        proxy_temp_file_write_size 256k;</span><br><span class="line">        location / &#123;</span><br><span class="line">                proxy_set_header        X-Forwarded-Protocol  $scheme;</span><br><span class="line">                proxy_set_header        Host            $host;</span><br><span class="line">                proxy_set_header        X-Real-IP       $remote_addr;</span><br><span class="line">                proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">                proxy_pass      http://127.0.0.1:5000;  # 指向flask地址</span><br><span class="line">                access_log logs/testweb.log;</span><br><span class="line">                error_log logs/testweb-error.log;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="重启nginx"><a href="#重启nginx" class="headerlink" title="重启nginx"></a>重启nginx</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nginx -t </span><br><span class="line">nginx -s reload</span><br></pre></td></tr></table></figure>
+<h3 id="浏览器查看"><a href="#浏览器查看" class="headerlink" title="浏览器查看"></a>浏览器查看</h3><p>浏览器会报不安全站点</p>
+<p>可以找一家云供应商免费有一年的证书使用，例如腾讯云，这样就是正规的证书了</p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p><a href="http://python.jobbole.com/87588/" target="_blank" rel="noopener">如何理解Nginx、uWSGI和Flask之间的关系？</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://rogersnowing.cn/post/918d8812.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Roger Luo (Luo Dingjia)">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Roger's Note">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/post/918d8812.html" class="post-title-link" itemprop="url">LeetCode-741.md</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-12-25 20:01:43" itemprop="dateCreated datePublished" datetime="2019-12-25T20:01:43+08:00">2019-12-25</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-01-06 09:59:03" itemprop="dateModified" datetime="2020-01-06T09:59:03+08:00">2020-01-06</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <a id="more"></a>
+<p>使用dp计算<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[][] grid;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[][][] memo;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">cherryPickup</span><span class="params">(<span class="keyword">int</span>[][] grid)</span> </span>&#123;</span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 56/56 cases passed (23 ms)</span></span><br><span class="line"><span class="comment">         * Your runtime beats 54.69 % of java submissions</span></span><br><span class="line"><span class="comment">         * 这个算法是huahua https://zxi.mytechroad.com/blog/dynamic-programming/leetcode-741-cherry-pickup/</span></span><br><span class="line"><span class="comment">         * 首先不能分开计算最优解，这样会变成贪婪算法，达不到最优解</span></span><br><span class="line"><span class="comment">         * 将一个来回的路程等效成2个人同时从右下角走到左上角</span></span><br><span class="line"><span class="comment">         * 获取状态转移公式将1人k=i+j跟另一个人k=p+q来实现</span></span><br><span class="line"><span class="comment">         * 时间复杂度 O(n^3)</span></span><br><span class="line"><span class="comment">         * 空间复杂度 O(n^3)</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">this</span>.grid = grid;</span><br><span class="line">        <span class="keyword">int</span> m = grid.length;</span><br><span class="line">        <span class="keyword">int</span> n = grid[<span class="number">0</span>].length;</span><br><span class="line">        memo = <span class="keyword">new</span> <span class="keyword">int</span>[m][n][n];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m; ++i)</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; n; ++j)</span><br><span class="line">                Arrays.fill(memo[i][j], Integer.MIN_VALUE);</span><br><span class="line">        <span class="keyword">return</span> Math.max(<span class="number">0</span>, dp(n - <span class="number">1</span>, m - <span class="number">1</span>, n - <span class="number">1</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">dp</span><span class="params">(<span class="keyword">int</span> x1, <span class="keyword">int</span> y1, <span class="keyword">int</span> x2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">int</span> y2 = x1 + y1 - x2;</span><br><span class="line">        <span class="comment">// 边界控制</span></span><br><span class="line">        <span class="keyword">if</span> (x1 &lt; <span class="number">0</span> || y1 &lt; <span class="number">0</span> || x2 &lt; <span class="number">0</span> || y2 &lt; <span class="number">0</span>) <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">        <span class="comment">// 遇到是-1，就跳过</span></span><br><span class="line">        <span class="keyword">if</span> (grid[y1][x1] &lt; <span class="number">0</span> || grid[y2][x2] &lt; <span class="number">0</span>) <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">        <span class="comment">// 同时达到终点</span></span><br><span class="line">        <span class="keyword">if</span> (x1 == <span class="number">0</span> &amp;&amp; y1 == <span class="number">0</span>) <span class="keyword">return</span> grid[y1][x1];</span><br><span class="line">        <span class="comment">// 已经算过的值最优解，直接返回</span></span><br><span class="line">        <span class="keyword">if</span> (memo[y1][x1][x2] != Integer.MIN_VALUE) <span class="keyword">return</span> memo[y1][x1][x2];</span><br><span class="line">        memo[y1][x1][x2] = Math.max(</span><br><span class="line">                <span class="comment">// 由于限制了行动轨迹，去是往右跟往下，转换过来其实就是往左，往上</span></span><br><span class="line">                <span class="comment">// 回是往左，往上，这样同时从右下角出发，其实两个人都是只有两个方法，就有4种组合</span></span><br><span class="line">                <span class="comment">// 左，左 x1 - 1, y1, x2 - 1</span></span><br><span class="line">                <span class="comment">// 上, 上 x1, y1 - 1, x2 这里y2也是隐含在里面了,因为 x1 + y1 = x2 + y2</span></span><br><span class="line">                <span class="comment">// 上，左 x1, y1 - 1, x2 - 1</span></span><br><span class="line">                <span class="comment">// 左，上 x1 - 1, y1, x2</span></span><br><span class="line">                Math.max(dp(x1 - <span class="number">1</span>, y1, x2 - <span class="number">1</span>), dp(x1, y1 - <span class="number">1</span>, x2)),</span><br><span class="line">                Math.max(dp(x1, y1 - <span class="number">1</span>, x2 - <span class="number">1</span>), dp(x1 - <span class="number">1</span>, y1, x2)));</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (memo[y1][x1][x2] &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="comment">// 同时达到一个点，让1用户拿到值，防止重复拿</span></span><br><span class="line">            memo[y1][x1][x2] += grid[y1][x1];</span><br><span class="line">            <span class="comment">// 如果不是同一个点</span></span><br><span class="line">            <span class="keyword">if</span> (x1 != x2) memo[y1][x1][x2] += grid[y2][x2];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> memo[y1][x1][x2];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://rogersnowing.cn/post/7df0eae7.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1497,309 +1832,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://rogersnowing.cn/post/c65d7fee.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Roger Luo (Luo Dingjia)">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Roger's Note">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/post/c65d7fee.html" class="post-title-link" itemprop="url">intellij下spark提交集群调试</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-09-26 14:51:08 / 修改时间：15:08:19" itemprop="dateCreated datePublished" datetime="2019-09-26T14:51:08+08:00">2019-09-26</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>intellij下使用spark提交到集群进行调试<br>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/post/c65d7fee.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </p></div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://rogersnowing.cn/post/b4005e93.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Roger Luo (Luo Dingjia)">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Roger's Note">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/post/b4005e93.html" class="post-title-link" itemprop="url">intellij下spark程序本地调试</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-09-26 13:35:33 / 修改时间：14:29:17" itemprop="dateCreated datePublished" datetime="2019-09-26T13:35:33+08:00">2019-09-26</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>intellij idea下本地调试spark程序，打包程序使用的是maven<br>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/post/b4005e93.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </p></div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1841,7 +1878,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">49</span>
+                    <span class="site-state-item-count">51</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -2003,7 +2040,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">61</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">63</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -2045,7 +2086,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>
