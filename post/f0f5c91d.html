@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+  <meta name="google-site-verification" content="byhWoQUfSwWgh2OkIV9b7co8brBG6OLSZwm9ivUtuZ0">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.2" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="对于经常写blog童靴来说md是一个很好格式化文档的文件格式，这里就会遇到写文档是需要上传图片的情况。 这里使用picgo来集成到vscode来实现自主上传图片方便编写md。">
+<meta name="keywords" content="vscode,picgo,tencent-cloud-cos">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vscode配置picgo实现图床自动上传">
+<meta property="og:url" content="https://rogersnowing.cn/post/f0f5c91d.html">
+<meta property="og:site_name" content="Roger&#39;s Note">
+<meta property="og:description" content="对于经常写blog童靴来说md是一个很好格式化文档的文件格式，这里就会遇到写文档是需要上传图片的情况。 这里使用picgo来集成到vscode来实现自主上传图片方便编写md。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://pic-wm-1251286439.cos.ap-guangzhou.myqcloud.com/undefined20200221120439.png">
+<meta property="og:image" content="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/undefined20200221135906.png">
+<meta property="og:image" content="https://pic-wm-1251286439.cos.ap-guangzhou.myqcloud.com/undefined20200221142758.png">
+<meta property="og:updated_time" content="2020-02-21T06:28:20.977Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vscode配置picgo实现图床自动上传">
+<meta name="twitter:description" content="对于经常写blog童靴来说md是一个很好格式化文档的文件格式，这里就会遇到写文档是需要上传图片的情况。 这里使用picgo来集成到vscode来实现自主上传图片方便编写md。">
+<meta name="twitter:image" content="https://pic-wm-1251286439.cos.ap-guangzhou.myqcloud.com/undefined20200221120439.png">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://rogersnowing.cn/post/f0f5c91d">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>vscode配置picgo实现图床自动上传 | Roger's Note</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Roger's Note</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Salvation lies within</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://rogersnowing.cn/post/f0f5c91d.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Roger Luo (Luo Dingjia)">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Roger's Note">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">vscode配置picgo实现图床自动上传
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-02-19 14:29:56" itemprop="dateCreated datePublished" datetime="2020-02-19T14:29:56+08:00">2020-02-19</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-02-21 14:28:20" itemprop="dateModified" datetime="2020-02-21T14:28:20+08:00">2020-02-21</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>对于经常写blog童靴来说md是一个很好格式化文档的文件格式，这里就会遇到写文档是需要上传图片的情况。</p>
+<p>这里使用picgo来集成到vscode来实现自主上传图片方便编写md。</p>
+<a id="more"></a>
+<h1 id="安装vscode以及插件"><a href="#安装vscode以及插件" class="headerlink" title="安装vscode以及插件"></a>安装vscode以及插件</h1><p>安装vscode直接参考官网说明即可。</p>
+<p>插件使用的是<code>PicGo</code></p>
+<h1 id="配置图床信息"><a href="#配置图床信息" class="headerlink" title="配置图床信息"></a>配置图床信息</h1><p>打开vscode的用户配置，修改如下参数，这里以腾讯云的cos对象存储来说明<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">"picgo.picBed.tcyun.appId": "自己的appid",</span><br><span class="line">"picgo.picBed.tcyun.area": "桶所属地域",</span><br><span class="line">"picgo.picBed.tcyun.secretId": "个人秘钥",</span><br><span class="line">"picgo.picBed.tcyun.secretKey": "个人秘钥",</span><br><span class="line">"picgo.picBed.tcyun.bucket": "桶存储名称",</span><br><span class="line">"picgo.picBed.current": "图床类型"</span><br></pre></td></tr></table></figure></p>
+<h1 id="上传命令"><a href="#上传命令" class="headerlink" title="上传命令"></a>上传命令</h1><table>
+<thead>
+<tr>
+<th style="text-align:left">os</th>
+<th style="text-align:left">上传剪切板图片</th>
+<th style="text-align:left">上传本地图片</th>
+<th style="text-align:left">上传来自输入框图片</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">win/unix</td>
+<td style="text-align:left">ctrl+alt+u</td>
+<td style="text-align:left">ctrl+alt+e</td>
+<td style="text-align:left">ctrl+alt+o</td>
+</tr>
+<tr>
+<td style="text-align:left">osx</td>
+<td style="text-align:left">cmd+opt+u</td>
+<td style="text-align:left">cmd+opt+e</td>
+<td style="text-align:left">cmd+opt+o</td>
+</tr>
+</tbody>
+</table>
+<h1 id="选择截图工具"><a href="#选择截图工具" class="headerlink" title="选择截图工具"></a>选择截图工具</h1><p>对于mac系统选择ishot或者系统自带的截图，前者功能更大，有马赛克，标注功能。xnap也可以使用，但是有部分功能是收费的。</p>
+<p>对于windows用户使用Snipaste，轻量级，功能也十分强大。</p>
+<h1 id="截图如何添加水印"><a href="#截图如何添加水印" class="headerlink" title="截图如何添加水印"></a>截图如何添加水印</h1><p>为了防止盗图，可以添加水印来保护权益。</p>
+<p>这里参考了两种方式，一种是使用scf云函数来实现，在文件上传到图床cos之后触发函数来添加水印，但是这种有个缺点就是为了防止事件的重复触发，需要增加上传到另一个bucket，同时需要修改picgo返回的url。</p>
+<p>优点：水印只操作一次<br>缺点：需要手工修改url地址，图床需要存储两份，需要额外部署</p>
+<p>ps：注意使用云函数的时候需要关闭cos的日志功能，不然会产生大量的调用。</p>
+<p>另一种方法是使用数据万象添加水印的接口，原理是在上传到cos之后，直接在原由的url后面追加水印的接口参数，这样每次从cos下载图片的时候都会走一次接口加工生成带水印的图片。</p>
+<p>优点：方便部署，添加方便<br>缺点：每次引用图片都需要调用一次，如果量不大的比较适合</p>
+<p>ps：这里有个地方比较坑的是，csdn有自己的图片转存机制，使用数据万象的水印技术的话，水印是会过滤的，因为在图床的图片就是原始图片。</p>
+<p><img src="https://pic-wm-1251286439.cos.ap-guangzhou.myqcloud.com/undefined20200221120439.png" alt="20200221120439.png"></p>
+<p>然后比较这两种方式的收费方式</p>
+<p>这里看了下腾讯云的数据万象的水印免费额度是10TB/月，对于个人博客或者流量不大的，可以认为是足够的。</p>
+<p>云函数的话统计的维度是资源使用量跟调用次数，前者是每月40万GBs，后者是每月100万次，后面的指标比较好理解，而资源使用量是</p>
+<p><strong>资源使用量 = 函数配置内存 × 运行时长</strong></p>
+<p>这个水印代码不是很复杂，而且又是在腾讯云的服务操作（下载字体，加水印，上传水印图片）平均下来执行时的时长平均下来不到30ms，执行内存也只要25M，按照这个公式，可以支持的调用次数是<br>25/1024*30/1000=0.00073G，这样就要调用次数是548w次。</p>
+<p>以下是我实际部署运行情况：<br><img src="https://pic-1251286439.cos.ap-guangzhou.myqcloud.com/undefined20200221135906.png" alt="20200221135906.png"><br>所以选择使用哪种对于个人使用都是足够的。</p>
+<h2 id="scf的示例代码"><a href="#scf的示例代码" class="headerlink" title="scf的示例代码"></a>scf的示例代码</h2><p>因为可以自定义字体，这里提供一个酷炫的<a href="https://www.fontsquirrel.com/fonts/list/popular" target="_blank" rel="noopener">字体体验网站</a><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf8 -*-</span></span><br><span class="line"><span class="comment"># SCF configures the COS trigger, obtains the file uploading information from COS, and downloads it to the local temporary disk 'tmp' of SCF.</span></span><br><span class="line"><span class="comment"># SCF配置COS触发，从COS获取文件上传信息，并下载到SCF的本地临时磁盘tmp</span></span><br><span class="line"><span class="keyword">from</span> qcloud_cos_v5 <span class="keyword">import</span> CosConfig</span><br><span class="line"><span class="keyword">from</span> qcloud_cos_v5 <span class="keyword">import</span> CosS3Client</span><br><span class="line"><span class="keyword">from</span> qcloud_cos_v5 <span class="keyword">import</span> CosServiceError</span><br><span class="line"><span class="keyword">from</span> qcloud_cos_v5 <span class="keyword">import</span> CosClientError</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"></span><br><span class="line"><span class="comment"># 图片处理</span></span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image, ImageFont, ImageDraw</span><br><span class="line"></span><br><span class="line">logging.basicConfig(level=logging.INFO, stream=sys.stdout)</span><br><span class="line"></span><br><span class="line">appid = 按情况填写  <span class="comment"># Please replace with your APPID. 请替换为您的 APPID</span></span><br><span class="line">secret_id = <span class="string">u'按情况填写'</span>  <span class="comment"># Please replace with your SecretId. 请替换为您的 SecretId</span></span><br><span class="line">secret_key = <span class="string">u'按情况填写'</span>  <span class="comment"># Please replace with your SecretKey. 请替换为您的 SecretKey</span></span><br><span class="line">region = <span class="string">u'按情况填写'</span>  <span class="comment"># Please replace with the region where COS bucket located. 请替换为您bucket 所在的地域</span></span><br><span class="line">token = <span class="string">''</span></span><br><span class="line">to_bucket = <span class="string">'按情况填写'</span> + str(appid)</span><br><span class="line"></span><br><span class="line">config = CosConfig(Secret_id=secret_id, Secret_key=secret_key, Region=region, Token=token)</span><br><span class="line">client = CosS3Client(config)</span><br><span class="line">logger = logging.getLogger()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 下载字体文件</span></span><br><span class="line">font_path = <span class="string">'/tmp/font.ttf'</span></span><br><span class="line">response = client.get_object(Bucket=to_bucket, Key=<span class="string">"font.ttf"</span>, )</span><br><span class="line">response[<span class="string">'Body'</span>].get_stream_to_file(font_path)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add_font_watermark</span><span class="params">(src_path_img, save_path_img, text)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    add font watermark into image</span></span><br><span class="line"><span class="string">    :param src_path_img: source path of image</span></span><br><span class="line"><span class="string">    :param save_path_img: saving path of image</span></span><br><span class="line"><span class="string">    :param text: text to add as watermark</span></span><br><span class="line"><span class="string">    :return: null</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 打开图片</span></span><br><span class="line">    im = Image.open(src_path_img).convert(<span class="string">'RGBA'</span>)</span><br><span class="line">    <span class="comment"># 新建一个空白图片,尺寸与打开图片一样</span></span><br><span class="line">    txt = Image.new(<span class="string">'RGBA'</span>, im.size, (<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>))</span><br><span class="line">    <span class="comment"># 设置字体</span></span><br><span class="line">    fnt = ImageFont.truetype(font_path, <span class="number">40</span>)</span><br><span class="line">    <span class="comment"># 操作新建的空白图片&gt;&gt;将新建的图片添入画板</span></span><br><span class="line">    d = ImageDraw.Draw(txt)</span><br><span class="line">    <span class="comment"># 在新建的图片上添加字体</span></span><br><span class="line">    d.text((txt.size[<span class="number">0</span>] - <span class="number">220</span>, txt.size[<span class="number">1</span>] - <span class="number">80</span>), text, font=fnt, fill=(<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>))</span><br><span class="line">    <span class="comment"># 合并两个图片</span></span><br><span class="line">    out = Image.alpha_composite(im, txt)</span><br><span class="line">    <span class="comment"># 保存图像</span></span><br><span class="line">    out.save(save_path_img)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main_handler</span><span class="params">(event, context)</span>:</span></span><br><span class="line">    logger.info(<span class="string">"start main handler"</span>)</span><br><span class="line">    <span class="keyword">for</span> record <span class="keyword">in</span> event[<span class="string">'Records'</span>]:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            bucket = record[<span class="string">'cos'</span>][<span class="string">'cosBucket'</span>][<span class="string">'name'</span>] + <span class="string">'-'</span> + str(appid)</span><br><span class="line">            key = record[<span class="string">'cos'</span>][<span class="string">'cosObject'</span>][<span class="string">'key'</span>]</span><br><span class="line">            key = key.replace(<span class="string">'/'</span> + str(appid) + <span class="string">'/'</span> + record[<span class="string">'cos'</span>][<span class="string">'cosBucket'</span>][<span class="string">'name'</span>] + <span class="string">'/'</span>, <span class="string">''</span>, <span class="number">1</span>)</span><br><span class="line">            logger.info(<span class="string">"Key is "</span> + key)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># download object from cos</span></span><br><span class="line">            logger.info(<span class="string">"Get from [%s] to download file [%s]"</span> % (bucket, key))</span><br><span class="line">            download_path = <span class="string">'/tmp/&#123;&#125;'</span>.format(key)</span><br><span class="line">            upload_path = <span class="string">'/tmp/wm_&#123;&#125;'</span>.format(key)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                response = client.get_object(Bucket=bucket, Key=key, )</span><br><span class="line">                response[<span class="string">'Body'</span>].get_stream_to_file(download_path)</span><br><span class="line">                logger.info(<span class="string">"Download file [%s] Success"</span> % key)</span><br><span class="line"></span><br><span class="line">                <span class="comment"># 增加水印</span></span><br><span class="line">                add_font_watermark(download_path, upload_path, <span class="string">"by Roger Luo"</span>)</span><br><span class="line">                logger.info(<span class="string">"Add watermark file [%s] Success"</span> % key)</span><br><span class="line"></span><br><span class="line">                <span class="comment"># 上传水印图片</span></span><br><span class="line">                response = client.put_object_from_local_file(</span><br><span class="line">                    Bucket=to_bucket,</span><br><span class="line">                    LocalFilePath=upload_path,</span><br><span class="line">                    Key=key</span><br><span class="line">                )</span><br><span class="line">                logger.info(<span class="string">"Upload file [%s] Success"</span> % (key))</span><br><span class="line"></span><br><span class="line">            <span class="keyword">except</span> CosServiceError <span class="keyword">as</span> e:</span><br><span class="line">                print(e.get_error_code())</span><br><span class="line">                print(e.get_error_msg())</span><br><span class="line">                print(e.get_resource_location())</span><br><span class="line">                <span class="keyword">return</span> <span class="string">"Fail"</span></span><br><span class="line">            </span><br><span class="line"></span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            print(e)</span><br><span class="line">            print(<span class="string">'Error getting object &#123;&#125; from bucket &#123;&#125;. '</span>.format(key, bucket))</span><br><span class="line">            <span class="keyword">raise</span> e</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"Fail"</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="string">"Success"</span></span><br></pre></td></tr></table></figure></p>
+<p>生成图片效果如下：<br><img src="https://pic-wm-1251286439.cos.ap-guangzhou.myqcloud.com/undefined20200221142758.png" alt="20200221142758.png"></p>
+<h2 id="使用数据万象的水印接口"><a href="#使用数据万象的水印接口" class="headerlink" title="使用数据万象的水印接口"></a>使用数据万象的水印接口</h2><p>输入一个cos的url地址，返回一个代签名的url<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_water_mark_from_ci</span><span class="params">(src_url_img, text)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    数据万象-水印接口</span></span><br><span class="line"><span class="string">    :param src_url_img: 输入源地址</span></span><br><span class="line"><span class="string">    :param text: 水印内容</span></span><br><span class="line"><span class="string">    :return: 返回调用地址</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 基本配置</span></span><br><span class="line">    <span class="comment"># 水印内容</span></span><br><span class="line">    text = base64encode(text)</span><br><span class="line">    <span class="comment"># 字体</span></span><br><span class="line">    font = base64encode(<span class="string">'simfang仿宋.ttf'</span>)</span><br><span class="line">    <span class="comment"># 字体大小</span></span><br><span class="line">    fontsize = <span class="number">50</span></span><br><span class="line">    <span class="comment"># 字体颜色</span></span><br><span class="line">    fill = base64encode(<span class="string">'#3D3D3D'</span>)</span><br><span class="line">    <span class="comment"># 文字透明度</span></span><br><span class="line">    dissolve = <span class="number">100</span></span><br><span class="line">    <span class="comment"># 水印位置 默认 SouthEast（右上角）</span></span><br><span class="line">    gravity = <span class="string">'southeast'</span></span><br><span class="line">    <span class="comment"># 水平（横轴）边距，单位为像素，缺省值为0</span></span><br><span class="line">    dx = <span class="number">0</span></span><br><span class="line">    <span class="comment"># 垂直（纵轴）边距，单位为像素，默认值为0</span></span><br><span class="line">    dy = <span class="number">0</span></span><br><span class="line">    <span class="comment"># 平铺水印功能，可将文字水印平铺至整张图片。当 batch 设置为1时，开启平铺水印功能</span></span><br><span class="line">    batch = <span class="number">0</span></span><br><span class="line">    <span class="comment"># 文字水印的旋转角度设置，取值范围为0 - 360，默认0</span></span><br><span class="line">    degree = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    result = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    result = src_url_img + <span class="string">'?watermark/2/text/&#123;&#125;/font/&#123;&#125;/fontsize/&#123;&#125;/fill/&#123;&#125;/dissolve/&#123;&#125;/gravity/&#123;&#125;/dx/&#123;&#125;/dy/&#123;&#125;/batch/&#123;&#125;/degree/&#123;&#125;'</span>\</span><br><span class="line">        .format(text, font, fontsize, fill, dissolve, gravity, dx, dy, batch, degree)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div>原创技术分享，您的支持将鼓励我继续创作</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="https://pic-wm-1251286439.cos.ap-guangzhou.myqcloud.com/wechat.jpg" alt="Roger Luo (Luo Dingjia) 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="https://pic-wm-1251286439.cos.ap-guangzhou.myqcloud.com/alipay.jpg" alt="Roger Luo (Luo Dingjia) 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/vscode/" rel="tag"># vscode</a>
+          
+            <a href="/tags/picgo/" rel="tag"># picgo</a>
+          
+            <a href="/tags/tencent-cloud-cos/" rel="tag"># tencent-cloud-cos</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/post/acdd6ba2.html" rel="next" title="vps-test-tool">
+                <i class="fa fa-chevron-left"></i> vps-test-tool
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Roger Luo (Luo Dingjia)</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">54</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">67</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安装vscode以及插件"><span class="nav-number">1.</span> <span class="nav-text">安装vscode以及插件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置图床信息"><span class="nav-number">2.</span> <span class="nav-text">配置图床信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#上传命令"><span class="nav-number">3.</span> <span class="nav-text">上传命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#选择截图工具"><span class="nav-number">4.</span> <span class="nav-text">选择截图工具</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#截图如何添加水印"><span class="nav-number">5.</span> <span class="nav-text">截图如何添加水印</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#scf的示例代码"><span class="nav-number">5.1.</span> <span class="nav-text">scf的示例代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用数据万象的水印接口"><span class="nav-number">5.2.</span> <span class="nav-text">使用数据万象的水印接口</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Roger Luo (Luo Dingjia)</span>
+
+  
+
+  
+</div>
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="site-uv" title="总访客量">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="site-pv" title="总访问量">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+    <span class="post-meta-divider">|</span>
+
+
+
+
+  <script src="https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js"></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize("");
+    }
+  </script>
+
+
+
+<div class="BbeiAn-info"">
+  <a href="http://www.miitbeian.gov.cn">粤ICP备17113681号-1</a>
+  
+</div>
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.2"></script>
+
+  <script src="/js/motion.js?v=7.1.2"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.2"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+<script>
+if ($('body').find('pre.mermaid').length) {
+  $.ajax({
+    type: 'GET',
+    url: '',
+    dataType: 'script',
+    cache: true,
+    success: function() {
+      mermaid.initialize({
+        theme: '',
+        logLevel: 3,
+        flowchart: { curve: 'linear' },
+        gantt: { axisFormat: '%m/%d/%Y' },
+        sequence: { actorMargin: 50 }
+      });
+    }
+  });
+}
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
