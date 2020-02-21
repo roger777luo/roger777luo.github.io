@@ -98,19 +98,19 @@
 
 
 
-  <meta name="description" content="SQL数据结构 术语 window function 窗口函数 window function type 窗口函数类型/聚类函数 类似max,mean window specification 窗口规范，关于窗口的定义 window partition 窗口分区，根据列进行分区 window order 窗口排序，针对结果集进行排序的 window frame 滑动窗口，具备上限跟下限 windo">
+  <meta name="description" content="介绍SQL聚合语法跟术语">
 <meta name="keywords" content="bigdata,window fucntion,slide window">
 <meta property="og:type" content="article">
-<meta property="og:title" content="sql-window-function-desc">
+<meta property="og:title" content="SQL聚合语法跟术语">
 <meta property="og:url" content="https://rogersnowing.cn/post/2e39eeef.html">
 <meta property="og:site_name" content="Roger&#39;s Note">
-<meta property="og:description" content="SQL数据结构 术语 window function 窗口函数 window function type 窗口函数类型/聚类函数 类似max,mean window specification 窗口规范，关于窗口的定义 window partition 窗口分区，根据列进行分区 window order 窗口排序，针对结果集进行排序的 window frame 滑动窗口，具备上限跟下限 windo">
+<meta property="og:description" content="介绍SQL聚合语法跟术语">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/SQLWindowFunction.svg/1280px-SQLWindowFunction.svg.png">
-<meta property="og:updated_time" content="2019-10-10T08:59:05.644Z">
+<meta property="og:updated_time" content="2020-02-21T07:02:27.373Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="sql-window-function-desc">
-<meta name="twitter:description" content="SQL数据结构 术语 window function 窗口函数 window function type 窗口函数类型/聚类函数 类似max,mean window specification 窗口规范，关于窗口的定义 window partition 窗口分区，根据列进行分区 window order 窗口排序，针对结果集进行排序的 window frame 滑动窗口，具备上限跟下限 windo">
+<meta name="twitter:title" content="SQL聚合语法跟术语">
+<meta name="twitter:description" content="介绍SQL聚合语法跟术语">
 <meta name="twitter:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/SQLWindowFunction.svg/1280px-SQLWindowFunction.svg.png">
 
 
@@ -129,7 +129,7 @@
   };
 </script>
 
-  <title>sql-window-function-desc | Roger's Note</title>
+  <title>SQL聚合语法跟术语 | Roger's Note</title>
   
 
 
@@ -315,7 +315,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">sql-window-function-desc
+          <h1 class="post-title" itemprop="name headline">SQL聚合语法跟术语
 
               
             
@@ -341,12 +341,24 @@
                 
               
 
-              <time title="创建时间：2019-10-10 16:32:07 / 修改时间：16:59:05" itemprop="dateCreated datePublished" datetime="2019-10-10T16:32:07+08:00">2019-10-10</time>
+              <time title="创建时间：2019-10-10 16:32:07" itemprop="dateCreated datePublished" datetime="2019-10-10T16:32:07+08:00">2019-10-10</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-02-21 15:02:27" itemprop="dateModified" datetime="2020-02-21T15:02:27+08:00">2020-02-21</time>
               
             
           </span>
@@ -380,7 +392,8 @@
       
 
       
-        <h1 id="SQL数据结构"><a href="#SQL数据结构" class="headerlink" title="SQL数据结构"></a>SQL数据结构</h1><p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/SQLWindowFunction.svg/1280px-SQLWindowFunction.svg.png" alt="img"></p>
+        <p>介绍SQL聚合语法跟术语<br><a id="more"></a></p>
+<h1 id="SQL数据结构"><a href="#SQL数据结构" class="headerlink" title="SQL数据结构"></a>SQL数据结构</h1><p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/SQLWindowFunction.svg/1280px-SQLWindowFunction.svg.png" alt="img"></p>
 <h1 id="术语"><a href="#术语" class="headerlink" title="术语"></a>术语</h1><ul>
 <li><code>window function</code> 窗口函数</li>
 <li><code>window function type</code> 窗口函数类型/聚类函数 类似<code>max</code>,<code>mean</code></li>
